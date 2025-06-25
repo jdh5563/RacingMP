@@ -1,0 +1,11 @@
+{
+  "name": "com.packagebase.userinterfaces",
+  "version": "1.0.0",
+  "displayName": "packageBase_userInterfaces",
+  "description": "Package to create reusable UI.",
+  "unity": "6000.0",
+  "author": {
+    "name": "Michael Santos",
+    "url": "https://people.rit.edu/mjs8837"
+  }
+}
