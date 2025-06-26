@@ -1,5 +1,11 @@
 using System;
+using System.Threading.Tasks;
 using Unity.Netcode;
+using Unity.Netcode.Transports.UTP;
+using Unity.Services.Authentication;
+using Unity.Services.Core;
+using Unity.Services.Relay.Models;
+using Unity.Services.Relay;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -13,6 +19,7 @@ namespace HelloWorld
 		Button serverButton;
 		Button moveButton;
 		Label statusLabel;
+		string joinCode = "";
 
 		void OnEnable()
 		{
@@ -51,9 +58,9 @@ namespace HelloWorld
 			moveButton.clicked -= SubmitNewPosition;
 		}
 
-		void OnHostButtonClicked() => NetworkManager.Singleton.StartHost();
+		async void OnHostButtonClicked() => joinCode = await StartHostWithRelay(2, "udp");
 
-		void OnClientButtonClicked() => NetworkManager.Singleton.StartClient();
+		async void OnClientButtonClicked() => await StartClientWithRelay(joinCode, "udp");
 
 		void OnServerButtonClicked() => NetworkManager.Singleton.StartServer();
 
@@ -148,6 +155,32 @@ namespace HelloWorld
 				HelloWorldPlayer player = playerObject.GetComponent<HelloWorldPlayer>();
 				player.Move();
 			}
+		}
+
+		public async Task<string> StartHostWithRelay(int maxConnections, string connectionType)
+		{
+			await UnityServices.InitializeAsync();
+			if (!AuthenticationService.Instance.IsSignedIn)
+			{
+				await AuthenticationService.Instance.SignInAnonymouslyAsync();
+			}
+			Allocation allocation = await RelayService.Instance.CreateAllocationAsync(maxConnections);
+			NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(AllocationUtils.ToRelayServerData(allocation, connectionType));
+			string joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
+			return NetworkManager.Singleton.StartHost() ? joinCode : null;
+		}
+
+		public async Task<bool> StartClientWithRelay(string joinCode, string connectionType)
+		{
+			await UnityServices.InitializeAsync();
+			if (!AuthenticationService.Instance.IsSignedIn)
+			{
+				await AuthenticationService.Instance.SignInAnonymouslyAsync();
+			}
+
+			JoinAllocation allocation = await RelayService.Instance.JoinAllocationAsync(joinCode: joinCode);
+			NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(AllocationUtils.ToRelayServerData(allocation, connectionType));
+			return !string.IsNullOrEmpty(joinCode) && NetworkManager.Singleton.StartClient();
 		}
 	}
 }
