@@ -8,11 +8,15 @@ using Unity.Services.Relay.Models;
 using Unity.Services.Relay;
 using UnityEngine;
 using UnityEngine.UIElements;
+using TMPro;
 
 namespace HelloWorld
 {
 	public class HelloWorldManager : MonoBehaviour
 	{
+		[SerializeField]
+		private TMP_InputField _joinCodeField;
+
 		VisualElement rootVisualElement;
 		Button hostButton;
 		Button clientButton;
@@ -60,7 +64,7 @@ namespace HelloWorld
 
 		async void OnHostButtonClicked() => joinCode = await StartHostWithRelay(2, "udp");
 
-		async void OnClientButtonClicked() => await StartClientWithRelay(joinCode, "udp");
+		async void OnClientButtonClicked() => await StartClientWithRelay(_joinCodeField.text, "udp");
 
 		void OnServerButtonClicked() => NetworkManager.Singleton.StartServer();
 
@@ -167,11 +171,21 @@ namespace HelloWorld
 			Allocation allocation = await RelayService.Instance.CreateAllocationAsync(maxConnections);
 			NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(AllocationUtils.ToRelayServerData(allocation, connectionType));
 			string joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
+
+			Debug.Log($"The host created with join code: {joinCode}");
 			return NetworkManager.Singleton.StartHost() ? joinCode : null;
 		}
 
 		public async Task<bool> StartClientWithRelay(string joinCode, string connectionType)
 		{
+			// If there is no join code, return false.
+			if (string.IsNullOrEmpty(joinCode))
+			{
+				return false;
+			}
+
+			Debug.Log($"The client is trying to connect with join code: {joinCode}");
+
 			await UnityServices.InitializeAsync();
 			if (!AuthenticationService.Instance.IsSignedIn)
 			{
