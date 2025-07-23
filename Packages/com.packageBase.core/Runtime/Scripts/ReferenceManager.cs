@@ -11,7 +11,7 @@ namespace packageBase.core
     {
         #region Fields
 
-        private Dictionary<Type, InitableBase> _references = new Dictionary<Type, InitableBase>();
+        private readonly Dictionary<Type, InitableBase> _references = new();
 
         public static ReferenceManager Instance { get; private set; }
 

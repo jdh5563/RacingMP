@@ -11,11 +11,18 @@ namespace packageBase.userInterfaces
     /// </summary>
     public class MenuInput : InitableBase
     {
+        [SerializeField]
+        private AudioSource _audioSource;
+
+        [SerializeField]
+        private AudioClip _menuNavigationAudioClip;
+
+        private AudioManager _audioManager;
         private IGlobalInputManager _globalInputManager;
         private IMenuManager _menuManager;
 
-        private List<InputAction> _menuInputActions = new List<InputAction>();
-        private float _scrollCooldownTime = 0.2f;
+        private List<InputAction> _menuInputActions = new();
+        private readonly float _scrollCooldownTime = 0.2f;
 
         public bool CanScroll { get; private set; } = true;
         public string MenuMapName { get; private set; } = "MenuMap";
@@ -31,6 +38,7 @@ namespace packageBase.userInterfaces
         {
             base.DoPostInit();
 
+            _audioManager = ReferenceManager.Instance.GetReference<AudioManager>();
             _menuManager = ReferenceManager.Instance.GetReference<MenuManager>();
             _globalInputManager = ReferenceManager.Instance.GetReference<GlobalInputManager>();
 

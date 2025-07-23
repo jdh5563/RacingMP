@@ -7,7 +7,7 @@ namespace packageBase.userInterfaces
 {
     public class SettingsMenu : Menu
     {
-        private List<MenuSlider> _sliders = new List<MenuSlider>();
+        private readonly List<MenuSlider> _sliders = new();
 
         public override void DoInit()
         {

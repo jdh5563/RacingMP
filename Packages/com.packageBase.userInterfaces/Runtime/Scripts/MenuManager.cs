@@ -19,9 +19,10 @@ namespace packageBase.userInterfaces
         private MenuInput _menuInput;
         private IGlobalInputManager _globalInputManager;
         private SettingsManager _settingsManager;
+        private AudioManager _audioManager;
 
         private Menus _previousMenu = Menus.None;
-        private List<Menu> _menuObjs = new List<Menu>();
+        private readonly List<Menu> _menuObjs = new();
 
         #endregion
 
@@ -51,6 +52,7 @@ namespace packageBase.userInterfaces
             _globalInputManager = ReferenceManager.Instance.GetReference<GlobalInputManager>();
             _menuInput = ReferenceManager.Instance.GetReference<MenuInput>();
             _settingsManager = ReferenceManager.Instance.GetReference<SettingsManager>();
+            _audioManager = ReferenceManager.Instance.GetReference<AudioManager>();
         }
 
         public override void DoDestroy()
@@ -109,21 +111,22 @@ namespace packageBase.userInterfaces
                         return;
                     }
 
+                    // PLAY MOVE SOUND HERE.
+
                     // Creating a new axis event data object to store the move direction from the scroll wheel.
-                    AxisEventData newData = new AxisEventData(EventSystem.current);
+                    AxisEventData newData = new(_globalInputManager.GetCurrentEventSystem());
                     newData.moveDir = context.ReadValue<Vector2>().y > 0.0f ? MoveDirection.Up : MoveDirection.Down;
 
                     // Setting the currently selected object to move based on the axis event data above.
                     GameObject currentSelection = _globalInputManager.GetCurrentEventSystem().currentSelectedGameObject;
                     currentSelection.GetComponent<Selectable>().OnMove(newData);
 
-                    // PLAY MOVE SOUND HERE.
-
                     StartCoroutine(_menuInput.ScrollCooldown());
 
                     break;
 
                 case MenuInputTypes.Move:
+
                     // PLAY MOVE SOUND HERE.
 
                     break;

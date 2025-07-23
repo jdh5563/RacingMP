@@ -1,7 +1,4 @@
-using packageBase.core;
-using UnityEngine;
-
-namespace packageBase.userInterfaces
+namespace packageBase.core
 {
     public class SettingsManager : InitableBase
     {

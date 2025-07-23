@@ -6,16 +6,17 @@ namespace packageBase.userInterfaces
 {
     public class MenuSlider : Slider, ISelectHandler, IDeselectHandler
     {
-        public SliderTypes SliderType { get; private set; }
-
         [SerializeField]
-        private Image customImage;
+        private SliderTypes _sliderType;
+
+        public SliderTypes SliderType
+        {
+            get { return _sliderType; }
+        }
 
         protected override void Start()
         {
             base.Start();
-
-            image = image != null ? image : customImage;
         }
 
         public override void OnSelect(BaseEventData eventData)

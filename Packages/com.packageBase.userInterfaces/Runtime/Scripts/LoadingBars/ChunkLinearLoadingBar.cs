@@ -28,7 +28,7 @@ namespace packageBase.userInterfaces
             for (int i = 0; i < _segments; i++)
             {
                 float newXPosition = barImage.transform.position.x + (imageWidth / _segments) * i;
-                Vector3 nextChunkPosition = new Vector3(newXPosition, barImage.transform.position.y, barImage.transform.position.z);
+                Vector3 nextChunkPosition = new(newXPosition, barImage.transform.position.y, barImage.transform.position.z);
 
                 Instantiate(barImage, nextChunkPosition, Quaternion.identity, transform).gameObject.SetActive(true);
 
