@@ -44,7 +44,7 @@ namespace packageBase.userInterfaces
 
             if (_globalInputManager.GetInputActionAsset() != null)
             {
-                InputActionMap menuInputActionMap = _globalInputManager.GetInputActionMap("MenuMap");
+                InputActionMap menuInputActionMap = _globalInputManager.GetInputActionMap(MenuMapName);
 
                 // Populating the input action list with all the menu input actions and binding an event to each.
                 for (int a = 0; a < menuInputActionMap.actions.Count; a++)

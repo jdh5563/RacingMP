@@ -7,13 +7,13 @@ namespace packageBase.core
     /// <summary>
     /// Class used to store references to different InitableBase objects in the project.
     /// </summary>
-    public class ReferenceManager : InitableBase
+    public class ReferenceManager : InitableBase, IReferenceManager
     {
         #region Fields
 
         private readonly Dictionary<Type, InitableBase> _references = new();
 
-        public static ReferenceManager Instance { get; private set; }
+        public static IReferenceManager Instance { get; private set; }
 
         #endregion
 
@@ -21,7 +21,7 @@ namespace packageBase.core
 
         public override void DoInit()
         {
-            if (Instance != null && Instance != this)
+            if (Instance != null && (object)Instance != this)
             {
                 Destroy(this);
             }
@@ -37,7 +37,7 @@ namespace packageBase.core
 
         #endregion
 
-        #region Public Functions
+        #region IReferenceManager
 
         public void AddReference<T>(InitableBase obj)
         {

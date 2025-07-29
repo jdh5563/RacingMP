@@ -20,6 +20,13 @@ namespace packageBase.core
             _settingsManager = ReferenceManager.Instance.GetReference<SettingsManager>();
         }
 
+        public override void DoDestroy()
+        {
+            base.DoDestroy();
+
+            ReferenceManager.Instance.RemoveReference<AudioManager>();
+        }
+
         public void PlaySound(AudioSource audioSource, AudioClip audioClip, AudioTypes audioType)
         {
             switch (audioType) 
