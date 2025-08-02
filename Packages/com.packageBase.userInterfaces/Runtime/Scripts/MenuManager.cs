@@ -194,6 +194,22 @@ namespace packageBase.userInterfaces
                     toggleMenu(Menus.None);
                     break;
 
+                case MenuButtonTypes.Host:
+
+                    toggleMenu(Menus.HostMenu);
+                    break;
+
+                case MenuButtonTypes.HostServer:
+
+                    HostMenu hostMenu = (HostMenu)_menuObjs[(int)CurrentMenu];
+                    hostMenu.HostServer();
+                    break;
+
+                case MenuButtonTypes.Join:
+
+                    toggleMenu(Menus.JoinMenu);
+                    break;
+
                 // Clicking the quit button closes the application if in the main menu.
                 // Clicking the quit button returns to the main menu if not in the main menu.
                 case MenuButtonTypes.Quit:

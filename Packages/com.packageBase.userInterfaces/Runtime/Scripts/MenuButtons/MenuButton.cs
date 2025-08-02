@@ -26,9 +26,21 @@ namespace packageBase.userInterfaces
             {
                 MenuButtonType = MenuButtonTypes.Settings;
             }
-            else if (name.Contains("Start"))
+            /*else if (name.Contains("Start"))
             {
                 MenuButtonType = MenuButtonTypes.Start;
+            }*/
+            else if (name.Contains("Start"))
+            {
+                MenuButtonType = MenuButtonTypes.Host;
+            }
+            else if (name.Contains("HostServer"))
+            {
+                MenuButtonType = MenuButtonTypes.HostServer;
+            }
+            else if (name.Contains("Join"))
+            {
+                MenuButtonType = MenuButtonTypes.Join;
             }
             else if (name.Contains("Quit"))
             {

@@ -8,6 +8,8 @@ public enum Menus
     LoadingScreen,
     PauseMenu,
     SettingsMenu,
+    HostMenu,
+    JoinMenu,
     Credits
 }
 
@@ -21,6 +23,9 @@ public enum MenuButtonTypes
     Resume,
     Settings,
     Start,
+    Host,
+    HostServer,
+    Join,
     Quit
 }
 
