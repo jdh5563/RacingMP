@@ -6,18 +6,20 @@ using Unity.Services.Core;
 using Unity.Services.Relay.Models;
 using Unity.Services.Relay;
 using UnityEngine;
-using TMPro;
 using packageBase.core;
 
 namespace packageBase.userInterfaces
 {
-	public class HelloWorldManager : InitableBase
+	public class MultiplayerMenuManager : InitableBase
 	{
+		[SerializeField]
+		private int _maxConnectedPlayers;
+
         public override void DoInit()
         {
 			base.DoInit();
 
-			ReferenceManager.Instance.AddReference<HelloWorldManager>(this);
+			ReferenceManager.Instance.AddReference<MultiplayerMenuManager>(this);
         }
 
 		/*void SubmitNewPosition()
@@ -39,14 +41,14 @@ namespace packageBase.userInterfaces
 			}
 		}*/
 
-		public async Task<string> StartHostWithRelay(int maxConnections, string connectionType)
+		public async Task<string> StartHostWithRelay(string connectionType)
 		{
 			await UnityServices.InitializeAsync();
 			if (!AuthenticationService.Instance.IsSignedIn)
 			{
 				await AuthenticationService.Instance.SignInAnonymouslyAsync();
 			}
-			Allocation allocation = await RelayService.Instance.CreateAllocationAsync(maxConnections);
+			Allocation allocation = await RelayService.Instance.CreateAllocationAsync(_maxConnectedPlayers);
 			NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(AllocationUtils.ToRelayServerData(allocation, connectionType));
 			string joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
 

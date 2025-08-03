@@ -182,12 +182,6 @@ namespace packageBase.userInterfaces
                     toggleMenu(Menus.SettingsMenu);
                     break;
 
-                // Clicking the start button toggles the loading screen.
-                case MenuButtonTypes.Start:
-
-                    toggleMenu(Menus.LoadingScreen);
-                    break;
-
                 // Clicking the resume button toggles the empty menu.
                 case MenuButtonTypes.Resume:
 

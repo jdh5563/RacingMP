@@ -10,7 +10,8 @@ public enum Menus
     SettingsMenu,
     HostMenu,
     JoinMenu,
-    Credits
+    Credits,
+    MultiplayerDisplay
 }
 
 /// <summary>
@@ -22,7 +23,6 @@ public enum MenuButtonTypes
     Credits,
     Resume,
     Settings,
-    Start,
     Host,
     HostServer,
     Join,
