@@ -1,0 +1,11 @@
+{
+  "name": "com.racingmp.track",
+  "version": "1.0.0",
+  "displayName": "racingMP_track",
+  "description": "Package for tracks and their management.",
+  "unity": "6000.0",
+  "author": {
+    "name": "John Heiden",
+    "url": "https://people.rit.edu/jdh5563"
+  }
+}

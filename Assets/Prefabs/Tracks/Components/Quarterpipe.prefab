@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2759808029588424284
+--- !u!1 &2471415427304108456
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,26 +8,26 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4536726441400077917}
-  - component: {fileID: 3367794996883389785}
-  - component: {fileID: 4823899710896711135}
-  - component: {fileID: 6057931417238167529}
-  - component: {fileID: 6624067351704308182}
-  - component: {fileID: 6812816086670288781}
+  - component: {fileID: 6245061885686993198}
+  - component: {fileID: 4891489599524674298}
+  - component: {fileID: 7156505093600056082}
+  - component: {fileID: 1333470193949065459}
+  - component: {fileID: 7441671320181504474}
+  - component: {fileID: 5744793181005491113}
   m_Layer: 0
   m_Name: Quarterpipe
-  m_TagString: Untagged
+  m_TagString: Track
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4536726441400077917
+--- !u!4 &6245061885686993198
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2759808029588424284}
+  m_GameObject: {fileID: 2471415427304108456}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 11.06951, y: 0.6798275, z: 0.4194317}
@@ -36,13 +36,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3367794996883389785
+--- !u!114 &4891489599524674298
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2759808029588424284}
+  m_GameObject: {fileID: 2471415427304108456}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8233d90336aea43098adf6dbabd606a2, type: 3}
@@ -2528,18 +2528,18 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 25562
+  m_VersionIndex: 25580
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
---- !u!114 &4823899710896711135
+--- !u!114 &7156505093600056082
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2759808029588424284}
+  m_GameObject: {fileID: 2471415427304108456}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1ca002da428252441b92f28d83c8a65f, type: 3}
@@ -2562,13 +2562,13 @@ MonoBehaviour:
         m_ArchDegrees: 90
         m_EndCaps: 1
         m_Smooth: 1
---- !u!23 &6057931417238167529
+--- !u!23 &1333470193949065459
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2759808029588424284}
+  m_GameObject: {fileID: 2471415427304108456}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -2607,21 +2607,21 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &6624067351704308182
+--- !u!33 &7441671320181504474
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2759808029588424284}
+  m_GameObject: {fileID: 2471415427304108456}
   m_Mesh: {fileID: 0}
---- !u!64 &6812816086670288781
+--- !u!64 &5744793181005491113
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2759808029588424284}
+  m_GameObject: {fileID: 2471415427304108456}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2

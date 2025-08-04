@@ -18,6 +18,12 @@
       "source": "embedded",
       "dependencies": {}
     },
+    "com.racingmp.track": {
+      "version": "file:com.racingMP.track",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.unity.ai.navigation": {
       "version": "2.0.7",
       "depth": 0,
