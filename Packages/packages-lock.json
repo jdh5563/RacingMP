@@ -6,6 +6,12 @@
       "source": "embedded",
       "dependencies": {}
     },
+    "com.packagebase.eventmanagement": {
+      "version": "file:com.packageBase.eventManagement",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.packagebase.userinterfaces": {
       "version": "file:com.packageBase.userInterfaces",
       "depth": 0,
