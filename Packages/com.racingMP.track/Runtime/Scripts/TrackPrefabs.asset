@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19ac62fc3b0abff4fafd3ef2ee1dc152, type: 3}
   m_Name: TrackPrefabs
   m_EditorClassIdentifier: 
-  startPrefab: {fileID: 4051406924533196798, guid: 90c90776d106527419183f8c39894e2a, type: 3}
-  endPrefab: {fileID: 7016563609333385466, guid: 82efed5a35254ea4397edeb1974385b1, type: 3}
-  checkPointPrefab: {fileID: 5797054753881114648, guid: e5edb65f70c6e9b4a9f3cc31afdc85f7, type: 3}
+  startPrefab: {fileID: 3297524717675489405, guid: ec3db7cf32a4f4442b7826c2422fcfd8, type: 3}
+  endPrefab: {fileID: 7274119241013839026, guid: d91def03db9500f4c842d636cbfafe4a, type: 3}
+  checkPointPrefab: {fileID: 8224932676978813297, guid: 5dab61c6792a7c54da93b260ece56a98, type: 3}
   trackComponentPrefabs:
-  - {fileID: 2471415427304108456, guid: 3690f8056b377d54ba7f5863b9ea583a, type: 3}
-  - {fileID: 1323143305110484472, guid: 925f4b5757870ab41babc30973ea0127, type: 3}
-  - {fileID: 8132017397843842383, guid: bf67098c9bec8a94a8364b0c5fb6bb25, type: 3}
   - {fileID: 3123437336439325613, guid: 2cf227dcabde16745965cc264c79f8c9, type: 3}
+  - {fileID: 8132017397843842383, guid: bf67098c9bec8a94a8364b0c5fb6bb25, type: 3}
+  - {fileID: 1323143305110484472, guid: 925f4b5757870ab41babc30973ea0127, type: 3}
   - {fileID: 8440271946070033907, guid: 44fd395db8e7aee4d90f1b5c281bfabc, type: 3}
-  - {fileID: 2008589017035022523, guid: 40d5aaa2507826e4da9712fa3e352767, type: 3}
+  - {fileID: 2409525453245083513, guid: 40d5aaa2507826e4da9712fa3e352767, type: 3}
+  - {fileID: 6820574906683240825, guid: bb57c1b0d2b7e6d468e54a16d75ef35e, type: 3}
   completeTrackPrefabs:
   - {fileID: 1686950612619991849, guid: 356b592782723574cbd098ddd621aa74, type: 3}

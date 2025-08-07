@@ -1,0 +1,17 @@
+{
+    "name": "racingMP.track",
+    "rootNamespace": "racingMP.track",
+    "references": [
+        "GUID:6a1b39909af256b489b52845b0243be0",
+        "GUID:1826c0224c0d048b88112c79bbb0cd85"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -376,7 +376,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 461d6803dba0aee44bbf0ade6ad970f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackPrefabs: {fileID: 11400000, guid: 502133951da450f4181b5121650ff332, type: 2}
+  trackPrefabsSO: {fileID: 11400000, guid: 502133951da450f4181b5121650ff332, type: 2}
+  gridWidth: 10
+  gridHeight: 10
+  gridDepth: 10
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
