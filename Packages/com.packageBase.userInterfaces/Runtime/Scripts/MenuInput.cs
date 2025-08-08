@@ -1,4 +1,5 @@
 using packageBase.core;
+using packageBase.eventManagement;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,13 +20,11 @@ namespace packageBase.userInterfaces
 
         private AudioManager _audioManager;
         private IGlobalInputManager _globalInputManager;
-        private IMenuManager _menuManager;
 
         private List<InputAction> _menuInputActions = new();
         private readonly float _scrollCooldownTime = 0.2f;
 
-        public bool CanScroll { get; private set; } = true;
-        public string MenuMapName { get; private set; } = "MenuMap";
+        private bool _canScroll = true;
 
         public override void DoInit()
         {
@@ -39,12 +38,11 @@ namespace packageBase.userInterfaces
             base.DoPostInit();
 
             _audioManager = ReferenceManager.Instance.GetReference<AudioManager>();
-            _menuManager = ReferenceManager.Instance.GetReference<MenuManager>();
             _globalInputManager = ReferenceManager.Instance.GetReference<GlobalInputManager>();
 
             if (_globalInputManager.GetInputActionAsset() != null)
             {
-                InputActionMap menuInputActionMap = _globalInputManager.GetInputActionMap(MenuMapName);
+                InputActionMap menuInputActionMap = _globalInputManager.GetInputActionMap("MenuMap");
 
                 // Populating the input action list with all the menu input actions and binding an event to each.
                 for (int a = 0; a < menuInputActionMap.actions.Count; a++)
@@ -74,14 +72,28 @@ namespace packageBase.userInterfaces
         /// <param name="context">Data fed in from the Unity Input system.</param>
         private void _menuInput_Performed(InputAction.CallbackContext context)
         {
-            _menuManager.HandleMenuInput(context);
+            MenuInputEvent menuChangeEvent = new(context);
+
+            if (context.action.name.Contains("Scroll"))
+            {
+                if (_canScroll)
+                {
+                    StartCoroutine(scrollCooldown());
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            EventManager.Instance.PublishEvent<MenuInputEvent>(in menuChangeEvent);
         }
 
-        public IEnumerator ScrollCooldown()
+        private IEnumerator scrollCooldown()
         {
-            CanScroll = false;
+            _canScroll = false;
             yield return new WaitForSeconds(_scrollCooldownTime);
-            CanScroll = true;
+            _canScroll = true;
         }
     }
 }

@@ -5,7 +5,8 @@ namespace packageBase.core
     /// </summary>
     public enum AudioTypes
     {
+        Music,
         SFX,
-        Music
+        Master
     }
 }

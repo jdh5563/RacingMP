@@ -1,70 +1,13 @@
+using packageBase.eventManagement;
+using UnityEngine;
+
 namespace packageBase.core
 {
-    public class SettingsManager : InitableBase
+    public class SettingsManager : InitableBase, ISubscriber<SliderValueChangeEvent>
     {
-        private float _masterVolume;
-        private float _sfxVolume;
-        private float _musicVolume;
-
-        public float MasterVolume
-        {
-            get { return _masterVolume; }
-            set 
-            {
-                if (value > 1.0f)
-                {
-                    _masterVolume = 1.0f;
-                }
-                else if (value < 0.0f)
-                {
-                    _masterVolume = 0.0f;
-                }
-                else
-                {
-                    _masterVolume = value;
-                }
-            }
-        }
-
-        public float SFXVolume
-        {
-            get { return _sfxVolume; }
-            set
-            {
-                if (value > 1.0f)
-                {
-                    _sfxVolume = 1.0f;
-                }
-                else if (value < 0.0f)
-                {
-                    _sfxVolume = 0.0f;
-                }
-                else
-                {
-                    _sfxVolume = value;
-                }
-            }
-        }
-
-        public float MusicVolume
-        {
-            get { return _musicVolume; }
-            set
-            {
-                if (value > 1.0f)
-                {
-                    _musicVolume = 1.0f;
-                }
-                else if (value < 0.0f)
-                {
-                    _musicVolume = 0.0f;
-                }
-                else
-                {
-                    _musicVolume = value;
-                }
-            }
-        }
+        public float MasterVolume { get; private set; }
+        public float SFXVolume { get; private set; }
+        public float MusicVolume { get; private set; }
 
         public override void DoInit()
         {
@@ -73,6 +16,54 @@ namespace packageBase.core
             DontDestroyOnLoad(gameObject);
 
             ReferenceManager.Instance.AddReference<SettingsManager>(this);
+        }
+
+        public override void DoPostInit()
+        {
+            base.DoPostInit();
+
+            EventManager.Instance.SubscribeEvent(typeof(SliderValueChangeEvent), this);
+        }
+
+        public void OnEventHandler(in SliderValueChangeEvent e)
+        {
+            float value = e.NewValue;
+
+            if (value > 1.0f)
+            {
+                value = 1.0f;
+            }
+            else if (value < 0.0f)
+            {
+                value = 0.0f;
+            }
+
+            switch (e.AudioType)
+            {
+                case AudioTypes.SFX:
+
+                    SFXVolume = value;
+
+                    break;
+
+                case AudioTypes.Music:
+
+                    MusicVolume = value;
+
+                    break;
+
+                case AudioTypes.Master:
+
+                    MasterVolume = value;
+
+                    break;
+
+                default:
+
+                    Debug.LogWarning("Unhandled audio type passed in.");
+
+                    break;
+            }
         }
     }
 }

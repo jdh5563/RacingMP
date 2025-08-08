@@ -3,6 +3,7 @@
     "rootNamespace": "packageBase.userInterfaces",
     "references": [
         "GUID:6a1b39909af256b489b52845b0243be0",
+        "GUID:03ad42633f3c6534fbd74d2e60f690fd",
         "GUID:75469ad4d38634e559750d17036d5f7c",
         "GUID:1491147abca9d7d4bb7105af628b223e",
         "GUID:fe25561d224ed4743af4c60938a59d0b",

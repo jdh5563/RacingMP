@@ -1,4 +1,5 @@
 using packageBase.core;
+using packageBase.eventManagement;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
@@ -12,11 +13,9 @@ namespace packageBase.userInterfaces
     /// <summary>
     /// Class responsible for handling changing menu states and other menu logic.
     /// </summary>
-    public class MenuManager : InitableBase, IMenuManager
+    public class MenuManager : InitableBase, IMenuManager, ISubscriber<MenuInputEvent>
     {
         #region Fields
-
-        private MenuInput _menuInput;
         private IGlobalInputManager _globalInputManager;
         private SettingsManager _settingsManager;
         private AudioManager _audioManager;
@@ -49,8 +48,9 @@ namespace packageBase.userInterfaces
         {
             base.DoPostInit();
 
+            EventManager.Instance.SubscribeEvent(typeof(MenuInputEvent), this);
+
             _globalInputManager = ReferenceManager.Instance.GetReference<GlobalInputManager>();
-            _menuInput = ReferenceManager.Instance.GetReference<MenuInput>();
             _settingsManager = ReferenceManager.Instance.GetReference<SettingsManager>();
             _audioManager = ReferenceManager.Instance.GetReference<AudioManager>();
         }
@@ -68,9 +68,11 @@ namespace packageBase.userInterfaces
 
         public Menus CurrentMenu { get; private set; } = Menus.MainMenu;
 
-        public event EventHandler<MenuChangeArgs> OnMenuChange;
-
-        public void HandleMenuInput(InputAction.CallbackContext context)
+        /// <summary>
+        /// Function to handle keyboard/controller input in menus.
+        /// </summary>
+        /// <param name="context">Unity input system object containing input information.</param>
+        private void HandleMenuInput(InputAction.CallbackContext context)
         {
             // No menu input should be tracked if not in a menu.
             if (CurrentMenu == Menus.None || CurrentMenu == Menus.LoadingScreen)
@@ -105,12 +107,7 @@ namespace packageBase.userInterfaces
 
                 case MenuInputTypes.ScrollWheel:
 
-                    // If the scroll is currently in cooldown, do nothing.
-                    if (!_menuInput.CanScroll)
-                    {
-                        return;
-                    }
-
+                    Debug.Log("Scrolling");
                     // PLAY MOVE SOUND HERE.
 
                     // Creating a new axis event data object to store the move direction from the scroll wheel.
@@ -120,8 +117,6 @@ namespace packageBase.userInterfaces
                     // Setting the currently selected object to move based on the axis event data above.
                     GameObject currentSelection = _globalInputManager.GetCurrentEventSystem().currentSelectedGameObject;
                     currentSelection.GetComponent<Selectable>().OnMove(newData);
-
-                    StartCoroutine(_menuInput.ScrollCooldown());
 
                     break;
 
@@ -226,32 +221,6 @@ namespace packageBase.userInterfaces
             }
         }
 
-        public void HandleSliderValueChange(float newValue, MenuSlider menuSlider)
-        {
-            switch (menuSlider.SliderType)
-            {
-                case SliderTypes.MasterVolume:
-
-                    _settingsManager.MasterVolume = newValue;
-                    break;
-
-                case SliderTypes.SFXVolume:
-
-                    _settingsManager.SFXVolume = newValue;
-                    break;
-
-                case SliderTypes.MusicVolume:
-
-                    _settingsManager.MusicVolume = newValue;
-                    break;
-
-                default:
-
-                    Debug.LogWarning("An unhandled slider type was modified.");
-                    break;
-            }
-        }
-
         #endregion
 
         #region Helper Functions
@@ -291,14 +260,15 @@ namespace packageBase.userInterfaces
                 // When entering the menu, switch to the menu input action map.
                 if (newMenu != Menus.None)
                 {
-                    _globalInputManager.ChangeCurrentInputMap(_menuInput.MenuMapName);
+                    _globalInputManager.ChangeCurrentInputMap("MenuMap");
                 }
                 else
                 {
                     _globalInputManager.ChangeCurrentInputMap("MainMap");
                 }
 
-                OnMenuChange?.Invoke(this, new MenuChangeArgs(_previousMenu, newMenu));
+                MenuChangeEvent menuChangeEvent = new(_previousMenu, newMenu);
+                EventManager.Instance.PublishEvent<MenuChangeEvent>(in menuChangeEvent);
             }
             catch (Exception ex)
             {
@@ -319,6 +289,11 @@ namespace packageBase.userInterfaces
             {
                 Application.Quit();
             }
+        }
+
+        public void OnEventHandler(in MenuInputEvent e)
+        {
+            HandleMenuInput(e.Context);
         }
 
         #endregion

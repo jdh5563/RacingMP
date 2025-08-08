@@ -1,31 +1,31 @@
 {
   "dependencies": {
     "com.packagebase.core": {
-      "version": "file:com.packageBase.core",
+      "version": "file:com.packagebase.core",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}
     },
     "com.packagebase.eventmanagement": {
-      "version": "file:com.packageBase.eventManagement",
+      "version": "file:com.packagebase.eventmanagement",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}
     },
     "com.packagebase.userinterfaces": {
-      "version": "file:com.packageBase.userInterfaces",
+      "version": "file:com.packagebase.userinterfaces",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}
     },
     "com.racingmp.player": {
-      "version": "file:com.racingMP.player",
+      "version": "file:com.racingmp.player",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}
     },
     "com.racingmp.track": {
-      "version": "file:com.racingMP.track",
+      "version": "file:com.racingmp.track",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}
