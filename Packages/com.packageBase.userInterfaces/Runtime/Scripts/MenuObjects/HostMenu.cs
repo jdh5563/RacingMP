@@ -2,6 +2,7 @@ using packageBase.core;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace packageBase.userInterfaces
 {
@@ -32,6 +33,11 @@ namespace packageBase.userInterfaces
         private void _networkManagerSingleton_OnConnectionEvent(NetworkManager arg1, ConnectionEventData arg2)
         {
             _joinedPlayerText.text += $"\nPlayer {arg2.ClientId}";
+
+            if (arg1.ConnectedClients.Count > 1)
+            {
+                SceneManager.LoadScene("JohnScene");
+            }
 
             if (arg1.IsHost)
             {
