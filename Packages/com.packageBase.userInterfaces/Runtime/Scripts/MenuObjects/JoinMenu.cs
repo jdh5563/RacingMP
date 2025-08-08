@@ -54,6 +54,8 @@ namespace packageBase.userInterfaces
             {
                 Debug.Log($"Joining server with join code {inputValue} was a success.");
 
+                ToggleMenu();
+
                 /*foreach (NetworkClient connectedPlayer in NetworkManager.Singleton.ConnectedClientsList)
                 {
                     _joinedPlayersText.text += $"\nPlayer {connectedPlayer.ClientId}";

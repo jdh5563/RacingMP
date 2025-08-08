@@ -14,13 +14,13 @@ namespace packageBase.userInterfaces
         [SerializeField]
         private TextMeshProUGUI _joinedPlayerText;
 
-        private MultiplayerMenuManager _helloWorldManager;
+        private MultiplayerMenuManager _multiplayerMenuManager;
 
         public override void DoPostInit()
         {
             base.DoPostInit();
 
-            _helloWorldManager = ReferenceManager.Instance.GetReference<MultiplayerMenuManager>();
+            _multiplayerMenuManager = ReferenceManager.Instance.GetReference<MultiplayerMenuManager>();
 
             NetworkManager.Singleton.OnConnectionEvent += _networkManagerSingleton_OnConnectionEvent;
         }
@@ -32,14 +32,16 @@ namespace packageBase.userInterfaces
 
         private void _networkManagerSingleton_OnConnectionEvent(NetworkManager arg1, ConnectionEventData arg2)
         {
-            _joinedPlayerText.text += $"\nPlayer {arg2.ClientId}";
+            //_joinedPlayerText.text += $"\nPlayer {arg2.ClientId}";
+
+            /*if (arg1.IsHost)
+            {
+                _joinedPlayerText.text += " - Host";
+            }*/
 
             arg1.SceneManager.LoadScene("JohnScene", LoadSceneMode.Single);
 
-            if (arg1.IsHost)
-            {
-                _joinedPlayerText.text += " - Host";
-            }
+            ToggleMenu();
         }
 
         /// <summary>
@@ -47,7 +49,7 @@ namespace packageBase.userInterfaces
         /// </summary>
         public async void HostServer()
         {
-            string joinCode = await _helloWorldManager.StartHostWithRelay("udp");
+            string joinCode = await _multiplayerMenuManager.StartHostWithRelay("udp");
 
             // If an empty string is returned, the server failed to start.
             if (string.IsNullOrEmpty(joinCode))
