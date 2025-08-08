@@ -256,6 +256,11 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!1 &507205410 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6337588513529456225, guid: 8ad3b0e726721c347be6b7faa8a07d3d, type: 3}
+  m_PrefabInstance: {fileID: 1966174040}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &521490820
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -837,7 +842,7 @@ PrefabInstance:
     - target: {fileID: 717977144147262784, guid: 3c513edb4be151f41b0faae296f3c4ca, type: 3}
       propertyPath: m_FirstSelected
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 507205410}
     - target: {fileID: 4822714011102537511, guid: 3c513edb4be151f41b0faae296f3c4ca, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

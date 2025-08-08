@@ -10,6 +10,8 @@ namespace packageBase.core
         {
             base.DoInit();
 
+            DontDestroyOnLoad(gameObject);
+
             ReferenceManager.Instance.AddReference<AudioManager>(this);
         }
 
