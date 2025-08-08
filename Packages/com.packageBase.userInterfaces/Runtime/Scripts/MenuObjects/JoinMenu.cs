@@ -53,7 +53,6 @@ namespace packageBase.userInterfaces
             else
             {
                 Debug.Log($"Joining server with join code {inputValue} was a success.");
-                SceneManager.LoadScene("JohnScene");
 
                 /*foreach (NetworkClient connectedPlayer in NetworkManager.Singleton.ConnectedClientsList)
                 {

@@ -34,10 +34,7 @@ namespace packageBase.userInterfaces
         {
             _joinedPlayerText.text += $"\nPlayer {arg2.ClientId}";
 
-            if (arg1.ConnectedClients.Count > 1)
-            {
-                SceneManager.LoadScene("JohnScene");
-            }
+            arg1.SceneManager.LoadScene("JohnScene", LoadSceneMode.Single);
 
             if (arg1.IsHost)
             {
