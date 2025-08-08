@@ -48,19 +48,20 @@ namespace racingMP.track
 		/// </summary>
 		private void GenerateTrack()
 		{
-			startBlock = SpawnTrackComponent(trackPrefabsSO.startPrefab, new Vector3Int(gridWidth * CELL_SIZE / 2, gridHeight * CELL_SIZE / 2, gridDepth * CELL_SIZE / 2), Quaternion.identity);
+			Instantiate(completeTracksByName["Simple Circuit"]);
+			//startBlock = SpawnTrackComponent(trackPrefabsSO.startPrefab, new Vector3Int(gridWidth / 2, gridHeight / 2, gridDepth / 2), Quaternion.identity);
 
-			SpawnTrackComponent(trackComponentsByName["Straight Long"], currentPos, Quaternion.identity);
-			SpawnTrackComponent(trackComponentsByName["Turn Short"], currentPos, Quaternion.identity);
+			//SpawnTrackComponent(trackComponentsByName["Straight Long"], currentPos, Quaternion.identity);
+			//SpawnTrackComponent(trackComponentsByName["Turn Short"], currentPos, Quaternion.identity);
 
-			SpawnTrackComponent(trackComponentsByName["Straight Long"], currentPos, Quaternion.Euler(0, 90, 0));
-			SpawnTrackComponent(trackComponentsByName["Turn Short"], currentPos, Quaternion.Euler(0, 90, 0));
+			//SpawnTrackComponent(trackComponentsByName["Straight Long"], currentPos, Quaternion.Euler(0, 90, 0));
+			//SpawnTrackComponent(trackComponentsByName["Turn Short"], currentPos, Quaternion.Euler(0, 90, 0));
 
-			SpawnTrackComponent(trackComponentsByName["Straight Long"], currentPos, Quaternion.identity);
-			SpawnTrackComponent(trackComponentsByName["Turn Short"], currentPos, Quaternion.Euler(0, 180, 0));
+			//SpawnTrackComponent(trackComponentsByName["Straight Long"], currentPos, Quaternion.identity);
+			//SpawnTrackComponent(trackComponentsByName["Turn Short"], currentPos, Quaternion.Euler(0, 180, 0));
 
-			SpawnTrackComponent(trackComponentsByName["Straight Long"], currentPos, Quaternion.Euler(0, 90, 0));
-			SpawnTrackComponent(trackComponentsByName["Turn Short"], currentPos, Quaternion.Euler(0, -90, 0));
+			//SpawnTrackComponent(trackComponentsByName["Straight Long"], currentPos, Quaternion.Euler(0, 90, 0));
+			//SpawnTrackComponent(trackComponentsByName["Turn Short"], currentPos, Quaternion.Euler(0, -90, 0));
 		}
 
 		/// <summary>
@@ -70,25 +71,6 @@ namespace racingMP.track
 		{
 			GameObject trackObj = Instantiate(trackComponent, new Vector3(pos.x * CELL_SIZE, pos.y * CELL_SIZE, pos.z * CELL_SIZE), rot);
 			Track track = trackObj.GetComponent<Track>();
-			Vector3 size = trackComponent.GetComponent<ProBuilderMesh>().GetComponent<Renderer>().bounds.size;
-
-			// THESE LOOPS WORK FOR OUR INITIAL TESTING BUT IN THE FUTURE TRACKS SHOULD JUST TELL THE MANAGER WHAT CELLS THEY OCCUPY
-			for (int i = 0; i < size.x / CELL_SIZE; i++)
-			{
-				worldGrid[pos.x + i, pos.y, pos.z] = track;
-			}
-
-			for (int i = 0; i < size.y / CELL_SIZE; i++)
-			{
-				worldGrid[pos.x, pos.y + i, pos.z] = track;
-			}
-
-			for (int i = 0; i < size.z / CELL_SIZE; i++)
-			{
-				worldGrid[pos.x, pos.y, pos.z + i] = track;
-			}
-
-			currentPos = new Vector3Int(pos.x + (int)size.x / CELL_SIZE, pos.y + (int)size.y / CELL_SIZE, pos.z + (int)size.z / CELL_SIZE);
 
 			return track;
 		}
