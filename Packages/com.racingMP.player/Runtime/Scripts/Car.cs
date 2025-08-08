@@ -1,4 +1,5 @@
 using packageBase.core;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace racingMP.player
@@ -7,7 +8,7 @@ namespace racingMP.player
     /// Class representing a car.
     /// Inherits from InitableBase in <see cref="packageBase.core"/>.
     /// </summary>
-    public class Car : InitableBase
+    public class Car : NetworkBehaviour
     {
         [SerializeField]
         private Drive _drive;
@@ -31,7 +32,18 @@ namespace racingMP.player
 
         private PlayerInput _playerInput;
 
-        public override void DoInit()
+        private void Awake()
+        {
+            _rb = GetComponent<Rigidbody>();
+            _rb.centerOfMass = _centerOfMass;
+        }
+
+        private void Start()
+        {
+            _playerInput = ReferenceManager.Instance.GetReference<PlayerInput>();
+        }
+
+        /*public override void DoInit()
         {
             base.DoInit();
 
@@ -39,14 +51,14 @@ namespace racingMP.player
             _rb.centerOfMass = _centerOfMass;
 
             ReferenceManager.Instance.AddReference<Car>(this);
-        }
+        }*/
 
-        public override void DoPostInit()
+        /*public override void DoPostInit()
         {
             base.DoPostInit();
 
             _playerInput = ReferenceManager.Instance.GetReference<PlayerInput>();
-        }
+        }*/
 
         private void FixedUpdate()
         {
