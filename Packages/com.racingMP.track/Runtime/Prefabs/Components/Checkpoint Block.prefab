@@ -20,6 +20,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 4946190032166919410, guid: d91def03db9500f4c842d636cbfafe4a, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 4aad078d200f3014d8383f26fc444bcb, type: 2}
     - target: {fileID: 6392044088358695209, guid: d91def03db9500f4c842d636cbfafe4a, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -72,6 +76,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8869182733837687723, guid: d91def03db9500f4c842d636cbfafe4a, type: 3}
+      propertyPath: m_Name
+      value: Checkpoint Block
+      objectReference: {fileID: 0}
     - target: {fileID: 9054975234455053020, guid: d91def03db9500f4c842d636cbfafe4a, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -83,25 +91,5 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7274119241013839026, guid: d91def03db9500f4c842d636cbfafe4a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8533794415763960242}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d91def03db9500f4c842d636cbfafe4a, type: 3}
---- !u!1 &8224932676978813297 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7274119241013839026, guid: d91def03db9500f4c842d636cbfafe4a, type: 3}
-  m_PrefabInstance: {fileID: 1645511895796805059}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &8533794415763960242
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8224932676978813297}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6622e7f562e5497429e12b0a4a231283, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
