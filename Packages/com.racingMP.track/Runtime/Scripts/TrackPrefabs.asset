@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: TrackPrefabs
   m_EditorClassIdentifier: 
   startPrefab: {fileID: 3613117383629387620, guid: ec3db7cf32a4f4442b7826c2422fcfd8, type: 3}
-  endPrefab: {fileID: 7909344510671959656, guid: 5dab61c6792a7c54da93b260ece56a98, type: 3}
-  checkPointPrefab: {fileID: 8869182733837687723, guid: d91def03db9500f4c842d636cbfafe4a, type: 3}
+  endPrefab: {fileID: 8869182733837687723, guid: d91def03db9500f4c842d636cbfafe4a, type: 3}
+  checkPointPrefab: {fileID: 7909344510671959656, guid: 5dab61c6792a7c54da93b260ece56a98, type: 3}
   trackComponentPrefabs:
   - {fileID: 3800998404443741364, guid: 2cf227dcabde16745965cc264c79f8c9, type: 3}
   - {fileID: 1876860249769240506, guid: bf67098c9bec8a94a8364b0c5fb6bb25, type: 3}
