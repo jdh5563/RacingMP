@@ -1,4 +1,5 @@
 using packageBase.core;
+using packageBase.eventManagement;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -38,7 +39,15 @@ namespace racingMP.player
             _rb.centerOfMass = _centerOfMass;
         }
 
-        private void Start()
+		public override void OnNetworkSpawn()
+		{
+			base.OnNetworkSpawn();
+
+            // Let the track manager know that this car has spawned in
+            EventManager.Instance.PublishEvent(new EventCarSpawn() { NetObjId = NetworkObjectId });
+		}
+
+		private void Start()
         {
             _playerInput = ReferenceManager.Instance.GetReference<PlayerInput>();
         }

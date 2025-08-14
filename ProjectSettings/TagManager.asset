@@ -6,6 +6,8 @@ TagManager:
   tags:
   - MenuAudio
   - Track
+  - Car
+  - Start
   layers:
   - Default
   - TransparentFX

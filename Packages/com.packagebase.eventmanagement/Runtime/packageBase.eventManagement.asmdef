@@ -1,7 +1,9 @@
 {
     "name": "packageBase.eventManagement",
-    "rootNamespace": "",
-    "references": [],
+    "rootNamespace": "packageBase.eventManagement",
+    "references": [
+        "GUID:1491147abca9d7d4bb7105af628b223e"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

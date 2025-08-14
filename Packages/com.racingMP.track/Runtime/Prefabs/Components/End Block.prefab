@@ -16,6 +16,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 1713707470661479720, guid: ec3db7cf32a4f4442b7826c2422fcfd8, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2547093433959519950, guid: ec3db7cf32a4f4442b7826c2422fcfd8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -84,6 +88,10 @@ PrefabInstance:
       propertyPath: m_VersionIndex
       value: 1933
       objectReference: {fileID: 0}
+    - target: {fileID: 6031021654673173343, guid: ec3db7cf32a4f4442b7826c2422fcfd8, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7732543124844311551, guid: ec3db7cf32a4f4442b7826c2422fcfd8, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -91,5 +99,38 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3613117383629387620, guid: ec3db7cf32a4f4442b7826c2422fcfd8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -8434861599881635798}
   m_SourcePrefab: {fileID: 100100000, guid: ec3db7cf32a4f4442b7826c2422fcfd8, type: 3}
+--- !u!1 &8869182733837687723 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3613117383629387620, guid: ec3db7cf32a4f4442b7826c2422fcfd8, type: 3}
+  m_PrefabInstance: {fileID: 5274266751761706191}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-8434861599881635798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8869182733837687723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 0
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
