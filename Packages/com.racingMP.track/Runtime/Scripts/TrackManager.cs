@@ -6,7 +6,7 @@ using racingMP.player;
 
 namespace racingMP.track
 {
-	public class TrackManager : NetworkBehaviour, ISubscriber<EventCarSpawn>
+	public class TrackManager : NetworkInitableBase, ISubscriber<EventCarSpawn>
 	{
 		[SerializeField] private TrackPrefabs trackPrefabsSO;
 		[SerializeField] private int gridWidth;

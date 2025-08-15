@@ -11,7 +11,7 @@ namespace packageBase.core
     {
         #region Fields
 
-        private readonly Dictionary<Type, InitableBase> _references = new();
+        private readonly Dictionary<Type, ISystem> _references = new();
 
         public static IReferenceManager Instance { get; private set; }
 
@@ -39,7 +39,7 @@ namespace packageBase.core
 
         #region IReferenceManager
 
-        public void AddReference<T>(InitableBase obj)
+        public void AddReference<T>(ISystem obj)
         {
             if (_references.ContainsKey(typeof(T)))
             {
@@ -57,7 +57,7 @@ namespace packageBase.core
             }
         }
 
-        public T GetReference<T>() where T : InitableBase
+        public T GetReference<T>() where T : ISystem
         {
             if (_references[typeof(T)] != null)
             {

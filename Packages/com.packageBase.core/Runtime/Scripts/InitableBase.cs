@@ -8,6 +8,8 @@ namespace packageBase.core
     /// </summary>
     public abstract class InitableBase : MonoBehaviour, IInitableBase
     {
+        public string Name => nameof(InitableBase);
+
         public async virtual void DoInit()
         {
             Debug.Log("Init called from: " + GetType());

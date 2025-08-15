@@ -3,7 +3,7 @@ namespace packageBase.core
     /// <summary>
     /// Interface for all objects that inherit from MonoBehavior.
     /// </summary>
-    public interface IInitableBase
+    public interface IInitableBase :  ISystem
     {
         /// <summary>
         /// Function run on the initialization of this script.
