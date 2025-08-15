@@ -2,8 +2,7 @@
     "name": "packageBase.core",
     "rootNamespace": "packageBase.core",
     "references": [
-        "GUID:75469ad4d38634e559750d17036d5f7c",
-        "GUID:03ad42633f3c6534fbd74d2e60f690fd"
+        "GUID:75469ad4d38634e559750d17036d5f7c"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

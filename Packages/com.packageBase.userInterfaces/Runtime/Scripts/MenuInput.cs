@@ -1,5 +1,4 @@
 using packageBase.core;
-using packageBase.eventManagement;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,7 +17,6 @@ namespace packageBase.userInterfaces
         [SerializeField]
         private AudioClip _menuNavigationAudioClip;
 
-        private AudioManager _audioManager;
         private IGlobalInputManager _globalInputManager;
 
         private List<InputAction> _menuInputActions = new();
@@ -37,7 +35,6 @@ namespace packageBase.userInterfaces
         {
             base.DoPostInit();
 
-            _audioManager = ReferenceManager.Instance.GetReference<AudioManager>();
             _globalInputManager = ReferenceManager.Instance.GetReference<GlobalInputManager>();
 
             if (_globalInputManager.GetInputActionAsset() != null)

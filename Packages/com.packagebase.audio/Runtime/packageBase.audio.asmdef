@@ -1,18 +1,15 @@
 {
-    "name": "racingMP.player",
-    "rootNamespace": "racingMP.player",
+    "name": "packageBase.audio",
+    "rootNamespace": "packageBase.audio",
     "references": [
         "GUID:6a1b39909af256b489b52845b0243be0",
-        "GUID:75469ad4d38634e559750d17036d5f7c",
-        "GUID:1491147abca9d7d4bb7105af628b223e"
+        "GUID:e9ee55f6e44312e4d8dfe6e37a57c4fc"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
-    "precompiledReferences": [
-        ""
-    ],
+    "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],

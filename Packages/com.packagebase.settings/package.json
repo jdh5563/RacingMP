@@ -1,0 +1,11 @@
+{
+  "name": "com.packagebase.settings",
+  "version": "1.0.0",
+  "displayName": "packageBase_settings",
+  "description": "Package to create settings functionality.",
+  "unity": "6000.0",
+  "author": {
+    "name": "Michael Santos",
+    "url": "https://people.rit.edu/mjs8837"
+  }
+}

@@ -1,5 +1,4 @@
 using packageBase.core;
-using packageBase.eventManagement;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -43,36 +42,9 @@ namespace packageBase.userInterfaces
         /// <param name="menuSlider">The slider that was adjusted.</param>
         private void _slider_OnValueChanged(float newValue, MenuSlider menuSlider)
         {
-            SliderValueChangeEvent sliderValueChangeEvent = default;
+            MenuSliderChangeEvent menuSliderChangeEvent = new(newValue, menuSlider.SliderType);
 
-            switch (menuSlider.SliderType)
-            {
-                case SliderTypes.MasterVolume:
-
-                    sliderValueChangeEvent = new SliderValueChangeEvent(newValue, AudioTypes.Master);
-
-                    break;
-
-                case SliderTypes.SFXVolume:
-
-                    sliderValueChangeEvent = new SliderValueChangeEvent(newValue, AudioTypes.SFX);
-
-                    break;
-
-                case SliderTypes.MusicVolume:
-
-                    sliderValueChangeEvent = new SliderValueChangeEvent(newValue, AudioTypes.Music);
-
-                    break;
-
-                default:
-
-                    Debug.LogWarning("An unhandled slider type was passed in.");
-
-                    break;
-            }
-
-            EventManager.Instance.PublishEvent<SliderValueChangeEvent>(sliderValueChangeEvent);
+            EventManager.Instance.PublishEvent<MenuSliderChangeEvent>(menuSliderChangeEvent);
         }
     }
 }

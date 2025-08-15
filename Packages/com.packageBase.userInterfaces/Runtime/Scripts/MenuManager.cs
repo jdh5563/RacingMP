@@ -1,5 +1,4 @@
 using packageBase.core;
-using packageBase.eventManagement;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
@@ -17,8 +16,6 @@ namespace packageBase.userInterfaces
     {
         #region Fields
         private IGlobalInputManager _globalInputManager;
-        private SettingsManager _settingsManager;
-        private AudioManager _audioManager;
 
         private Menus _previousMenu = Menus.None;
         private readonly List<Menu> _menuObjs = new();
@@ -51,8 +48,6 @@ namespace packageBase.userInterfaces
             EventManager.Instance.SubscribeEvent(typeof(MenuInputEvent), this);
 
             _globalInputManager = ReferenceManager.Instance.GetReference<GlobalInputManager>();
-            _settingsManager = ReferenceManager.Instance.GetReference<SettingsManager>();
-            _audioManager = ReferenceManager.Instance.GetReference<AudioManager>();
         }
 
         public override void DoDestroy()
@@ -108,7 +103,7 @@ namespace packageBase.userInterfaces
                 case MenuInputTypes.ScrollWheel:
 
                     Debug.Log("Scrolling");
-                    // PLAY MOVE SOUND HERE.
+                    //EventManager.Instance.PublishEvent<PlaySoun>
 
                     // Creating a new axis event data object to store the move direction from the scroll wheel.
                     AxisEventData newData = new(_globalInputManager.GetCurrentEventSystem());
