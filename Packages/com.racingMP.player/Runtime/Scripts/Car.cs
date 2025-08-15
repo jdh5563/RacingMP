@@ -8,7 +8,7 @@ namespace racingMP.player
     /// Class representing a car.
     /// Inherits from InitableBase in <see cref="packageBase.core"/>.
     /// </summary>
-    public class Car : NetworkInitableBase
+    public class Car : NetworkBehaviour, ISystem
     {
         [SerializeField]
         private Drive _drive;

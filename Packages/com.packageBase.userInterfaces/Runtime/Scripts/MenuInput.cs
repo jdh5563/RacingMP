@@ -9,14 +9,8 @@ namespace packageBase.userInterfaces
     /// <summary>
     /// Class responsible for tracking and handling menu input.
     /// </summary>
-    public class MenuInput : InitableBase
+    public class MenuInput : MonoBehaviour, ISystem
     {
-        [SerializeField]
-        private AudioSource _audioSource;
-
-        [SerializeField]
-        private AudioClip _menuNavigationAudioClip;
-
         private IGlobalInputManager _globalInputManager;
 
         private List<InputAction> _menuInputActions = new();
@@ -24,18 +18,14 @@ namespace packageBase.userInterfaces
 
         private bool _canScroll = true;
 
-        public override void DoInit()
+        private void Awake()
         {
-            base.DoInit();
-
             ReferenceManager.Instance.AddReference<MenuInput>(this);
         }
 
-        public override void DoPostInit()
+        private void Start()
         {
-            base.DoPostInit();
-
-            _globalInputManager = ReferenceManager.Instance.GetReference<GlobalInputManager>();
+            _globalInputManager = ReferenceManager.Instance.GetReference<IGlobalInputManager>();
 
             if (_globalInputManager.GetInputActionAsset() != null)
             {
@@ -50,10 +40,8 @@ namespace packageBase.userInterfaces
             }
         }
 
-        public override void DoDestroy()
+        private void OnDestroy()
         {
-            base.DoDestroy();
-
             // Removing the bound events from each menu input action.
             for (int a = 0; a < _menuInputActions.Count; a++)
             {

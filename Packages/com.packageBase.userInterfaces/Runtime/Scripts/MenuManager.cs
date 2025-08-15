@@ -1,3 +1,4 @@
+using packageBase.audio;
 using packageBase.core;
 using System;
 using System.Collections.Generic;
@@ -12,9 +13,10 @@ namespace packageBase.userInterfaces
     /// <summary>
     /// Class responsible for handling changing menu states and other menu logic.
     /// </summary>
-    public class MenuManager : InitableBase, IMenuManager, ISubscriber<MenuInputEvent>
+    public class MenuManager : MonoBehaviour, IMenuManager, ISubscriber<MenuInputEvent>
     {
         #region Fields
+
         private IGlobalInputManager _globalInputManager;
 
         private Menus _previousMenu = Menus.None;
@@ -24,13 +26,11 @@ namespace packageBase.userInterfaces
 
         #region InitiableBase
 
-        public override void DoInit()
+        private void Awake()
         {
-            base.DoInit();
-
             DontDestroyOnLoad(gameObject);
 
-            ReferenceManager.Instance.AddReference<MenuManager>(this);
+            ReferenceManager.Instance.AddReference<IMenuManager>(this);
 
             for (int m = 0; m < transform.childCount; m++)
             {
@@ -41,20 +41,16 @@ namespace packageBase.userInterfaces
             }
         }
 
-        public override void DoPostInit()
+        private void Start()
         {
-            base.DoPostInit();
-
             EventManager.Instance.SubscribeEvent(typeof(MenuInputEvent), this);
 
-            _globalInputManager = ReferenceManager.Instance.GetReference<GlobalInputManager>();
+            _globalInputManager = ReferenceManager.Instance.GetReference<IGlobalInputManager>();
         }
 
-        public override void DoDestroy()
+        private void OnDestroy()
         {
-            base.DoDestroy();
-
-            ReferenceManager.Instance.RemoveReference<MenuManager>();
+            ReferenceManager.Instance.RemoveReference<IMenuManager>();
         }
 
         #endregion
@@ -103,7 +99,6 @@ namespace packageBase.userInterfaces
                 case MenuInputTypes.ScrollWheel:
 
                     Debug.Log("Scrolling");
-                    //EventManager.Instance.PublishEvent<PlaySoun>
 
                     // Creating a new axis event data object to store the move direction from the scroll wheel.
                     AxisEventData newData = new(_globalInputManager.GetCurrentEventSystem());

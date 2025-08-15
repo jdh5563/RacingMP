@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 namespace racingMP.player
 {
-    public class PlayerInput : InitableBase
+    public class PlayerInput : MonoBehaviour, ISystem
     {
         private IGlobalInputManager _globalInputManager;
 
@@ -13,18 +13,14 @@ namespace racingMP.player
 
         public Vector2 MoveInput { get; private set; } = Vector2.zero;
 
-        public override void DoInit()
+        private void Awake()
         {
-            base.DoInit();
-
             ReferenceManager.Instance.AddReference<PlayerInput>(this);
         }
 
-        public override void DoPostInit()
+        private void Start()
         {
-            base.DoPostInit();
-
-            _globalInputManager = ReferenceManager.Instance.GetReference<GlobalInputManager>();
+            _globalInputManager = ReferenceManager.Instance.GetReference<IGlobalInputManager>();
 
             if (_globalInputManager.GetInputActionAsset() != null)
             {
@@ -55,10 +51,8 @@ namespace racingMP.player
             MoveInput = context.ReadValue<Vector2>();
         }
 
-        public override void DoDestroy()
+        private void OnDestroy()
         {
-            base.DoDestroy();
-
             ReferenceManager.Instance.RemoveReference<PlayerInput>();
         }
     }

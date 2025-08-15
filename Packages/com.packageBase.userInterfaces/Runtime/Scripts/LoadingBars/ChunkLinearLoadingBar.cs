@@ -8,10 +8,8 @@ namespace packageBase.userInterfaces
         [SerializeField, Range(4, 20)]
         private int _segments;
 
-        public override void DoInit()
+        private void Awake()
         {
-            base.DoInit();
-
             loadingBarType = LoadingBarTypes.ChunkLinear;
         }
 

@@ -1,11 +1,10 @@
-using packageBase.core;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace packageBase.userInterfaces
 {
-    public abstract class LoadingBar : InitableBase
+    public abstract class LoadingBar : MonoBehaviour
     {
         [SerializeField]
         protected Image barImage;

@@ -5,10 +5,8 @@ namespace packageBase.userInterfaces
 {
     public class SmoothLinearLoadingBar : LoadingBar
     {
-        public override void DoInit()
+        private void Awake()
         {
-            base.DoInit();
-
             loadingBarType = LoadingBarTypes.SmoothLinear;
         }
 

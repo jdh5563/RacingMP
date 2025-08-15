@@ -5,10 +5,8 @@ namespace packageBase.userInterfaces
 {
     public class SmoothRadialLoadingBar : LoadingBar
     {
-        public override void DoInit()
+        private void Awake()
         {
-            base.DoInit();
-
             loadingBarType = LoadingBarTypes.SmoothRadial;
         }
 

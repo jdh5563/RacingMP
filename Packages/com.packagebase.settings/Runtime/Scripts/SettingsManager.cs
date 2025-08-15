@@ -1,29 +1,27 @@
+using packageBase.audio;
 using packageBase.core;
 using packageBase.userInterfaces;
 using UnityEngine;
 
 namespace packageBase.settings
 {
-    public class SettingsManager : InitableBase, ISubscriber<MenuSliderChangeEvent>
+    public class SettingsManager : MonoBehaviour, ISystem, ISubscriber<MenuSliderChangeEvent>, ISubscriber<PlaySoundEventStart>
     {
         public float MasterVolume { get; private set; }
         public float SFXVolume { get; private set; }
         public float MusicVolume { get; private set; }
 
-        public override void DoInit()
+        private void Awake()
         {
-            base.DoInit();
-
             DontDestroyOnLoad(gameObject);
 
             ReferenceManager.Instance.AddReference<SettingsManager>(this);
         }
 
-        public override void DoPostInit()
+        private void Start()
         {
-            base.DoPostInit();
-
             EventManager.Instance.SubscribeEvent(typeof(MenuSliderChangeEvent), this);
+            EventManager.Instance.SubscribeEvent(typeof(PlaySoundEventStart), this);
         }
 
         public void OnEventHandler(in MenuSliderChangeEvent e)
@@ -65,6 +63,35 @@ namespace packageBase.settings
 
                     break;
             }
+        }
+
+        public void OnEventHandler(in PlaySoundEventStart e)
+        {
+            float targetVolume = MasterVolume;
+
+            switch (e.AudioType)
+            {
+                case AudioTypes.SFX:
+
+                    targetVolume *= SFXVolume;
+
+                    break;
+
+                case AudioTypes.Music:
+
+                    targetVolume *= MusicVolume;
+
+                    break;
+
+                default:
+
+                    Debug.LogWarning("An unhandled type of audio was passed in.");
+
+                    break;
+            }
+
+            PlaySoundEventFinal playSoundEventFinal = new (e, targetVolume);
+            EventManager.Instance.PublishEvent<PlaySoundEventFinal>(in playSoundEventFinal);
         }
     }
 }

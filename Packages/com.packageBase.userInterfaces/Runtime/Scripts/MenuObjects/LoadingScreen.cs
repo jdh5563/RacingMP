@@ -97,10 +97,8 @@ namespace packageBase.userInterfaces
             }
         }
 
-        public override void DoInit()
+        protected override void Awake()
         {
-            base.DoInit();
-
             // Storing all the images that are children of the loading dot holder.
             if (_dotHolder != null)
             {
@@ -124,12 +122,12 @@ namespace packageBase.userInterfaces
                     }
                 }
             }
+
+            base.Awake();
         }
 
-        public override void DoPostInit()
+        protected override void Start()
         {
-            base.DoPostInit();
-
             // Storing all the loading bars that are children of the loading bar holder.
             if (_loadingBarHolder != null)
             {
@@ -150,6 +148,8 @@ namespace packageBase.userInterfaces
                     }
                 }
             }
+
+            base.Start();
         }
 
         /// <summary>

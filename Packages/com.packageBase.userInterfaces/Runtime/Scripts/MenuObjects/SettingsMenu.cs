@@ -1,6 +1,5 @@
 using packageBase.core;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace packageBase.userInterfaces
 {
@@ -8,10 +7,8 @@ namespace packageBase.userInterfaces
     {
         private readonly List<MenuSlider> _sliders = new();
 
-        public override void DoInit()
+        protected override void Awake()
         {
-            base.DoInit();
-
             for (int s = 0; s < transform.childCount; s++)
             {
                 if (transform.GetChild(s).TryGetComponent(out MenuSlider slider))
@@ -19,12 +16,12 @@ namespace packageBase.userInterfaces
                     _sliders.Add(slider);
                 }
             }
+
+            base.Awake();
         }
 
-        public override void DoPostInit()
+        protected override void Start()
         {
-            base.DoPostInit();
-
             for (int s = 0; s < _sliders.Count; s++)
             {
                 MenuSlider menuSlider = _sliders[s];
@@ -33,6 +30,8 @@ namespace packageBase.userInterfaces
                     _slider_OnValueChanged(newValue, menuSlider);
                 });
             }
+
+            base.Start();
         }
 
         /// <summary>

@@ -1,3 +1,4 @@
+using packageBase.core;
 using System;
 using UnityEngine.InputSystem;
 
@@ -7,7 +8,7 @@ namespace packageBase.userInterfaces
     /// Interface used by the menu manager.
     /// Defines functionality necessary for the menu manager.
     /// </summary>
-    public interface IMenuManager
+    public interface IMenuManager : ISystem
     {
         /// <summary>
         /// The current active menu.

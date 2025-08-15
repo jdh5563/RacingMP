@@ -10,15 +10,13 @@ using packageBase.core;
 
 namespace packageBase.userInterfaces
 {
-	public class MultiplayerMenuManager : InitableBase
+	public class MultiplayerMenuManager : MonoBehaviour, ISystem
 	{
 		[SerializeField]
 		private int _maxConnectedPlayers;
 
-        public override void DoInit()
+        private void Awake()
         {
-			base.DoInit();
-
 			ReferenceManager.Instance.AddReference<MultiplayerMenuManager>(this);
         }
 

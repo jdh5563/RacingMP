@@ -8,7 +8,7 @@ namespace packageBase.core
     /// <summary>
     /// Class used to handle and track input throughout the project.
     /// </summary>
-    public class GlobalInputManager : InitableBase, IGlobalInputManager
+    public class GlobalInputManager : MonoBehaviour, IGlobalInputManager
     {
         [SerializeField]
         private InputActionAsset _inputActionAsset;
@@ -18,13 +18,11 @@ namespace packageBase.core
 
         public event EventHandler<InputActionMapChangeArgs> OnInputActionMapChange;
 
-        public override void DoInit()
+        private void Awake()
         {
-            base.DoInit();
-
             DontDestroyOnLoad(gameObject);
 
-            ReferenceManager.Instance.AddReference<GlobalInputManager>(this);
+            ReferenceManager.Instance.AddReference<IGlobalInputManager>(this);
             
             _playerInput = GetComponent<PlayerInput>();
 
@@ -34,11 +32,9 @@ namespace packageBase.core
             }
         }
 
-        public override void DoDestroy()
+        private void OnDestroy()
         {
-            base.DoDestroy();
-
-            ReferenceManager.Instance.RemoveReference<GlobalInputManager>();
+            ReferenceManager.Instance.RemoveReference<IGlobalInputManager>();
         }
 
         public InputActionMap GetCurrentInputMap()

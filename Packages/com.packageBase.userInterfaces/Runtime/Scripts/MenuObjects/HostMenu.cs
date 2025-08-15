@@ -16,18 +16,18 @@ namespace packageBase.userInterfaces
 
         private MultiplayerMenuManager _multiplayerMenuManager;
 
-        public override void DoPostInit()
+        protected override void Awake()
         {
-            base.DoPostInit();
+            base.Awake();
+        }
 
+        protected override void Start()
+        {
             _multiplayerMenuManager = ReferenceManager.Instance.GetReference<MultiplayerMenuManager>();
 
             NetworkManager.Singleton.OnConnectionEvent += _networkManagerSingleton_OnConnectionEvent;
-        }
 
-        public override void DoDestroy()
-        {
-            base.DoDestroy();
+            base.Start();
         }
 
         private void _networkManagerSingleton_OnConnectionEvent(NetworkManager arg1, ConnectionEventData arg2)

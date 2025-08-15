@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace packageBase.audio
 {
-    public struct PlaySoundEvent
+    public struct PlaySoundEventStart
     {
         public AudioSource AudioSource { get; private set; }
 
@@ -10,11 +10,24 @@ namespace packageBase.audio
 
         public AudioTypes AudioType { get; private set; }
 
-        public PlaySoundEvent(AudioSource audioSource, AudioClip audioClip, AudioTypes audioType)
+        public PlaySoundEventStart(AudioSource audioSource, AudioClip audioClip, AudioTypes audioType)
         {
             AudioSource = audioSource;
             AudioClip = audioClip;
             AudioType = audioType;
+        }
+    }
+
+    public struct PlaySoundEventFinal
+    {
+        public PlaySoundEventStart PlaySoundEventStart { get; private set; }
+
+        public float Volume { get; private set; }
+
+        public PlaySoundEventFinal(PlaySoundEventStart playSoundEventStart, float volume)
+        {
+            PlaySoundEventStart = playSoundEventStart;
+            Volume = volume;
         }
     }
 }

@@ -7,7 +7,7 @@ namespace packageBase.core
     /// <summary>
     /// Class used to store references to different InitableBase objects in the project.
     /// </summary>
-    public class ReferenceManager : InitableBase, IReferenceManager
+    public class ReferenceManager : MonoBehaviour, IReferenceManager
     {
         #region Fields
 
@@ -19,7 +19,7 @@ namespace packageBase.core
 
         #region InitableBase
 
-        public override void DoInit()
+        private void Awake()
         {
             if (Instance != null && (object)Instance != this)
             {
@@ -31,8 +31,6 @@ namespace packageBase.core
             }
 
             DontDestroyOnLoad(gameObject);
-
-            base.DoInit();
         }
 
         #endregion

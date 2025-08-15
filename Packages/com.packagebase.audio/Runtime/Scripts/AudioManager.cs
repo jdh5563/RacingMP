@@ -1,60 +1,37 @@
 using packageBase.core;
-using packageBase.settings;
 using UnityEngine;
 
 namespace packageBase.audio
 {
-    public class AudioManager : InitableBase, ISubscriber<PlaySoundEvent>
+    public class AudioManager : MonoBehaviour, ISystem, ISubscriber<PlaySoundEventFinal>
     {
-        private SettingsManager _settingsManager;
-
-        public override void DoInit()
+        private void Awake()
         {
-            base.DoInit();
-
             DontDestroyOnLoad(gameObject);
 
             ReferenceManager.Instance.AddReference<AudioManager>(this);
         }
 
-        public override void DoPostInit()
+        private void Start()
         {
-            base.DoPostInit();
+            EventManager.Instance.SubscribeEvent(typeof(PlaySoundEventFinal), this);
         }
 
-        public override void DoDestroy()
+        private void OnDestroy()
         {
-            base.DoDestroy();
-
             ReferenceManager.Instance.RemoveReference<AudioManager>();
         }
 
-        private void PlaySound(AudioSource audioSource, AudioClip audioClip, AudioTypes audioType)
+        private void PlaySound(AudioSource audioSource, AudioClip audioClip, float volume)
         {
-            switch (audioType) 
-            {
-                case AudioTypes.SFX:
-
-                    audioSource.volume = _settingsManager.SFXVolume * _settingsManager.MasterVolume;
-                    break;
-
-                case AudioTypes.Music:
-
-                    audioSource.volume = _settingsManager.MusicVolume * _settingsManager.MasterVolume;
-                    break;
-
-                default:
-
-                    Debug.LogWarning("An unhandled audio type was passed in.");
-                    break;
-            }
+            audioSource.volume = volume;
 
             audioSource.PlayOneShot(audioClip);
         }
 
-        public void OnEventHandler(in PlaySoundEvent e)
+        public void OnEventHandler(in PlaySoundEventFinal e)
         {
-            PlaySound(e.AudioSource, e.AudioClip, e.AudioType);
+            PlaySound(e.PlaySoundEventStart.AudioSource, e.PlaySoundEventStart.AudioClip, e.Volume);
         }
     }
 }

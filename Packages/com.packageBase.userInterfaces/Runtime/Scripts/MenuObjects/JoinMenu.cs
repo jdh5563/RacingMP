@@ -1,8 +1,6 @@
 using packageBase.core;
 using TMPro;
-using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace packageBase.userInterfaces
 {
@@ -16,22 +14,25 @@ namespace packageBase.userInterfaces
 
         private MultiplayerMenuManager _helloWorldManager;
 
-        public override void DoPostInit()
+        protected override void Awake()
         {
-            base.DoPostInit();
+            base.Awake();
+        }
 
+        protected override void Start()
+        {
             _helloWorldManager = ReferenceManager.Instance.GetReference<MultiplayerMenuManager>();
 
             if (_joinCodeInputField != null)
             {
                 _joinCodeInputField.onSubmit.AddListener((inputValue) => { _joinCodeInputField_OnSubmit(inputValue); });
             }
+
+            base.Start();
         }
 
-        public override void DoDestroy()
+        private void OnDestroy()
         {
-            base.DoDestroy();
-
             if (_joinCodeInputField != null)
             {
                 _joinCodeInputField.onSubmit.RemoveAllListeners();

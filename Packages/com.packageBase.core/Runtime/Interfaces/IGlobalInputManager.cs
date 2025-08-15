@@ -7,7 +7,7 @@ namespace packageBase.core
     /// <summary>
     /// Interface used to control what can be accessed through the global input manager.
     /// </summary>
-    public interface IGlobalInputManager
+    public interface IGlobalInputManager : ISystem
     {
         /// <summary>
         /// Event that can be bound to when an input action map changes.

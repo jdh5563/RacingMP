@@ -1,12 +1,13 @@
 using packageBase.core;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace packageBase.userInterfaces
 {
     /// <summary>
     /// Class to represent a Menu Object in the project.
     /// </summary>
-    public class Menu : InitableBase
+    public class Menu : MonoBehaviour
     {
         #region Fields
 
@@ -20,10 +21,8 @@ namespace packageBase.userInterfaces
 
         #region InitiableBase
 
-        public override void DoInit()
+        protected virtual void Awake()
         {
-            base.DoInit();
-
             for (int b = 0; b < transform.childCount; b++)
             {
                 if (transform.GetChild(b).TryGetComponent(out MenuButton menuButton))
@@ -33,11 +32,9 @@ namespace packageBase.userInterfaces
             }
         }
 
-        public override void DoPostInit()
+        protected virtual void Start()
         {
-            base.DoPostInit();
-
-            menuManager = ReferenceManager.Instance.GetReference<MenuManager>();
+            menuManager = ReferenceManager.Instance.GetReference<IMenuManager>();
 
             for (int b = 0; b < menuButtons.Count; b++)
             {
