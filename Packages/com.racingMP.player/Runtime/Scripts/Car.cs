@@ -8,7 +8,7 @@ namespace racingMP.player
     /// Class representing a car.
     /// Inherits from InitableBase in <see cref="packageBase.core"/>.
     /// </summary>
-    public class Car : NetworkBehaviour, ISystem
+    public class Car : NetworkBehaviour, ISystem, ISubscriber<EventRaceStarted>
     {
         [SerializeField]
         private Drive _drive;
@@ -32,6 +32,8 @@ namespace racingMP.player
 
         private PlayerInput _playerInput;
 
+        private bool canMove = false;
+
         private void Awake()
         {
             _rb = GetComponent<Rigidbody>();
@@ -44,6 +46,7 @@ namespace racingMP.player
 
             // Let the track manager know that this car has spawned in
             EventManager.Instance.PublishEvent(new EventCarSpawn() { NetObjId = NetworkObjectId });
+            EventManager.Instance.SubscribeEvent(typeof(EventRaceStarted), this);
 		}
 
 		private void Start()
@@ -70,6 +73,8 @@ namespace racingMP.player
 
         private void FixedUpdate()
         {
+            if (!canMove) return;
+
             // Handling functionality for all wheels.
             foreach (Wheel wheel in _wheels)
             {
@@ -77,5 +82,10 @@ namespace racingMP.player
                 wheel.Steer(_playerInput.MoveInput.x * _turnSensitivity * _maxSteerAngle);
             }
         }
-    }
+
+		public void OnEventHandler(in EventRaceStarted e)
+		{
+            canMove = true;
+		}
+	}
 }

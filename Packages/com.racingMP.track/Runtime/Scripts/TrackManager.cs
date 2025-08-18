@@ -3,6 +3,9 @@ using UnityEngine;
 using Unity.Netcode;
 using packageBase.core;
 using racingMP.player;
+using System.Collections;
+using UnityEngine.SceneManagement;
+using System;
 
 namespace racingMP.track
 {
@@ -51,6 +54,8 @@ namespace racingMP.track
 				{
 					MoveCarToStartRpc(playerObj.NetworkObjectId);
 				}
+
+				NetworkManager.SceneManager.OnLoadEventCompleted += Countdown;
 			}
 		}
 
@@ -114,6 +119,24 @@ namespace racingMP.track
 			trackObj.GetComponent<NetworkObject>().Spawn();
 
 			return track;
+		}
+
+		/// <summary>
+		/// When "JohnScene" loads, we begin the countdown timer to start the race
+		/// </summary>
+		private void Countdown(string sceneName, LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedOut)
+		{
+			if(sceneName == "JohnScene") StartCoroutine(StartRace());
+		}
+
+		/// <summary>
+		/// Runs a 3-second countdown
+		/// </summary>
+		private IEnumerator StartRace()
+		{
+			yield return new WaitForSeconds(3);
+
+			EventManager.Instance.PublishEvent(new EventRaceStarted());
 		}
 
 		[Rpc(SendTo.ClientsAndHost)]

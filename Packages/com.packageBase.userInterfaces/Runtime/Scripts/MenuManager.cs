@@ -2,6 +2,7 @@ using packageBase.audio;
 using packageBase.core;
 using System;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -176,13 +177,13 @@ namespace packageBase.userInterfaces
                 case MenuButtonTypes.Host:
 
                     toggleMenu(Menus.HostMenu);
-                    break;
+					break;
 
                 case MenuButtonTypes.HostServer:
 
                     HostMenu hostMenu = (HostMenu)_menuObjs[(int)CurrentMenu];
-                    hostMenu.HostServer();
-                    break;
+					hostMenu.BeginMatch();
+					break;
 
                 case MenuButtonTypes.Join:
 
