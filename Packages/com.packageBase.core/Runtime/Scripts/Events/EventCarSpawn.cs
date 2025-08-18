@@ -1,4 +1,4 @@
-namespace racingMP.player
+namespace packageBase.core
 {
     public struct EventCarSpawn
     {
