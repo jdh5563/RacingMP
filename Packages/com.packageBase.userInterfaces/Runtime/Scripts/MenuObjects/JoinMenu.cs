@@ -1,6 +1,7 @@
 using packageBase.core;
 using TMPro;
 using UnityEngine;
+using Unity.Netcode;
 
 namespace packageBase.userInterfaces
 {
@@ -31,7 +32,7 @@ namespace packageBase.userInterfaces
             base.Start();
         }
 
-        private void OnDestroy()
+        public override void OnDestroy()
         {
             if (_joinCodeInputField != null)
             {
@@ -55,12 +56,12 @@ namespace packageBase.userInterfaces
             {
                 Debug.Log($"Joining server with join code {inputValue} was a success.");
 
-                ToggleMenu();
+                _joinCodeInputField.gameObject.SetActive(false);
 
-                /*foreach (NetworkClient connectedPlayer in NetworkManager.Singleton.ConnectedClientsList)
+                foreach (NetworkObject networkObject in NetworkManager.Singleton.SpawnManager.PlayerObjects)
                 {
-                    _joinedPlayersText.text += $"\nPlayer {connectedPlayer.ClientId}";
-                }*/
+                    _joinedPlayersText.text += $"\n{networkObject.name}";
+                }
             }
         }
     }

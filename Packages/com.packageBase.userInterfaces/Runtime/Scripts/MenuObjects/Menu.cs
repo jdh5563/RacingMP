@@ -1,5 +1,6 @@
 using packageBase.core;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace packageBase.userInterfaces
@@ -7,7 +8,7 @@ namespace packageBase.userInterfaces
     /// <summary>
     /// Class to represent a Menu Object in the project.
     /// </summary>
-    public class Menu : MonoBehaviour
+    public class Menu : NetworkBehaviour
     {
         #region Fields
 

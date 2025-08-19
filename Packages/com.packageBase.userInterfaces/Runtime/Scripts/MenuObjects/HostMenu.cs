@@ -25,20 +25,20 @@ namespace packageBase.userInterfaces
         {
             _multiplayerMenuManager = ReferenceManager.Instance.GetReference<MultiplayerMenuManager>();
 
-			_hostServer();
+            NetworkManager.Singleton.OnConnectionEvent += Singleton_OnConnectionEvent;
+
+			hostServer();
 
 			base.Start();
         }
 
+        private void Singleton_OnConnectionEvent(NetworkManager arg1, ConnectionEventData arg2)
+        {
+            _joinedPlayerText.text += $"\n{arg1.SpawnManager.PlayerObjects[^1].name}";
+        }
+
         public void BeginMatch()
         {
-            //_joinedPlayerText.text += $"\nPlayer {arg2.ClientId}";
-
-            /*if (arg1.IsHost)
-            {
-                _joinedPlayerText.text += " - Host";
-            }*/
-
             NetworkManager.Singleton.SceneManager.LoadScene("JohnScene", LoadSceneMode.Single);
 
             ToggleMenu();
@@ -47,7 +47,7 @@ namespace packageBase.userInterfaces
         /// <summary>
         /// Async function used to attempt to host a server and display a join code.
         /// </summary>
-        private async void _hostServer()
+        private async void hostServer()
         {
             string joinCode = await _multiplayerMenuManager.StartHostWithRelay("udp");
 
