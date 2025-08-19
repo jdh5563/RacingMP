@@ -2,6 +2,7 @@ using packageBase.core;
 using TMPro;
 using UnityEngine;
 using Unity.Netcode;
+using UnityEngine.SceneManagement;
 
 namespace packageBase.userInterfaces
 {
@@ -24,7 +25,9 @@ namespace packageBase.userInterfaces
         {
             _helloWorldManager = ReferenceManager.Instance.GetReference<MultiplayerMenuManager>();
 
-            if (_joinCodeInputField != null)
+			NetworkManager.Singleton.OnConnectionEvent += LobbyConnectionEvent;
+
+			if (_joinCodeInputField != null)
             {
                 _joinCodeInputField.onSubmit.AddListener((inputValue) => { _joinCodeInputField_OnSubmit(inputValue); });
             }
@@ -32,7 +35,7 @@ namespace packageBase.userInterfaces
             base.Start();
         }
 
-        private void OnDestroy()
+		private void OnDestroy()
         {
             if (_joinCodeInputField != null)
             {
@@ -60,19 +63,24 @@ namespace packageBase.userInterfaces
             }
 		}
 
-        [Rpc(SendTo.Server)]
-        private void ServerUpdateTextRpc()
-        {
-            ClientUpdateTextRpc();
-        }
-
-        [Rpc(SendTo.ClientsAndHost)]
-        private void ClientUpdateTextRpc()
-        {
-            foreach (NetworkObject networkObject in NetworkManager.Singleton.SpawnManager.PlayerObjects)
+		public void LobbyConnectionEvent(NetworkManager arg1, ConnectionEventData arg2)
+		{
+			if (arg2.EventType == ConnectionEvent.ClientConnected)
             {
-                _joinedPlayersText.text += $"\n{networkObject.name}";
-            }
+				_joinedPlayersText.text = "Joined Players:";
+
+				foreach (NetworkObject player in arg1.SpawnManager.PlayerObjects)
+				{
+					_joinedPlayersText.text += $"\n{player.name}";
+				}
+
+				arg1.SceneManager.OnLoadEventCompleted += MatchStartEvent;
+			}
+		}
+
+        private void MatchStartEvent(string sceneName, LoadSceneMode loadSceneMode, System.Collections.Generic.List<ulong> clientsCompleted, System.Collections.Generic.List<ulong> clientsTimedOut)
+        {
+            if(sceneName == "JohnScene") ToggleMenu();
         }
-    }
+	}
 }

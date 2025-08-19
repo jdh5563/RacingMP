@@ -25,20 +25,25 @@ namespace packageBase.userInterfaces
         {
             _multiplayerMenuManager = ReferenceManager.Instance.GetReference<MultiplayerMenuManager>();
 
-            NetworkManager.Singleton.OnConnectionEvent += Singleton_OnConnectionEvent;
+			NetworkManager.Singleton.OnConnectionEvent += LobbyConnectionEvent;
 
 			hostServer();
 
 			base.Start();
         }
 
-        private void Singleton_OnConnectionEvent(NetworkManager arg1, ConnectionEventData arg2)
+        public void LobbyConnectionEvent(NetworkManager arg1, ConnectionEventData arg2)
         {
-            if (arg2.EventType == ConnectionEvent.ClientConnected)
-            {
-                _joinedPlayerText.text += $"\n{arg1.SpawnManager.PlayerObjects[^1].name}";
-            }
-        }
+			if (arg2.EventType == ConnectionEvent.ClientConnected)
+			{
+				_joinedPlayerText.text = "Joined Players:";
+
+				foreach (NetworkObject player in arg1.SpawnManager.PlayerObjects)
+				{
+					_joinedPlayerText.text += $"\n{player.name}";
+				}
+			}
+		}
 
         public void BeginMatch()
         {
