@@ -40,6 +40,13 @@ namespace packageBase.userInterfaces
             }
         }
 
+        public override void OnNetworkSpawn()
+        {
+            base.OnNetworkSpawn();
+
+            ServerUpdateTextRpc();
+        }
+
         /// <summary>
         /// Async function used to attempt to join a server when the join code input field submit event occurs.
         /// </summary>
@@ -57,8 +64,6 @@ namespace packageBase.userInterfaces
                 Debug.Log($"Joining server with join code {inputValue} was a success.");
 
                 _joinCodeInputField.gameObject.SetActive(false);
-
-                ServerUpdateTextRpc();
             }
         }
 
