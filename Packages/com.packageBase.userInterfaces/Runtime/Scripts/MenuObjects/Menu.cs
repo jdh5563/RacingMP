@@ -8,7 +8,7 @@ namespace packageBase.userInterfaces
     /// <summary>
     /// Class to represent a Menu Object in the project.
     /// </summary>
-    public class Menu : NetworkBehaviour
+    public class Menu : MonoBehaviour
     {
         #region Fields
 

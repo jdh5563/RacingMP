@@ -32,19 +32,12 @@ namespace packageBase.userInterfaces
             base.Start();
         }
 
-        public override void OnDestroy()
+        private void OnDestroy()
         {
             if (_joinCodeInputField != null)
             {
                 _joinCodeInputField.onSubmit.RemoveAllListeners();
             }
-        }
-
-        public override void OnNetworkSpawn()
-        {
-            base.OnNetworkSpawn();
-
-            ServerUpdateTextRpc();
         }
 
         /// <summary>
@@ -65,7 +58,7 @@ namespace packageBase.userInterfaces
 
                 _joinCodeInputField.gameObject.SetActive(false);
             }
-        }
+		}
 
         [Rpc(SendTo.Server)]
         private void ServerUpdateTextRpc()
