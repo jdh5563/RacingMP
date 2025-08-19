@@ -34,7 +34,10 @@ namespace packageBase.userInterfaces
 
         private void Singleton_OnConnectionEvent(NetworkManager arg1, ConnectionEventData arg2)
         {
-            _joinedPlayerText.text += $"\n{arg1.SpawnManager.PlayerObjects[^1].name}";
+            if (arg2.EventType == ConnectionEvent.ClientConnected)
+            {
+                _joinedPlayerText.text += $"\n{arg1.SpawnManager.PlayerObjects[^1].name}";
+            }
         }
 
         public void BeginMatch()

@@ -58,10 +58,22 @@ namespace packageBase.userInterfaces
 
                 _joinCodeInputField.gameObject.SetActive(false);
 
-                foreach (NetworkObject networkObject in NetworkManager.Singleton.SpawnManager.PlayerObjects)
-                {
-                    _joinedPlayersText.text += $"\n{networkObject.name}";
-                }
+                ServerUpdateTextRpc();
+            }
+        }
+
+        [Rpc(SendTo.Server)]
+        private void ServerUpdateTextRpc()
+        {
+            ClientUpdateTextRpc();
+        }
+
+        [Rpc(SendTo.ClientsAndHost)]
+        private void ClientUpdateTextRpc()
+        {
+            foreach (NetworkObject networkObject in NetworkManager.Singleton.SpawnManager.PlayerObjects)
+            {
+                _joinedPlayersText.text += $"\n{networkObject.name}";
             }
         }
     }
