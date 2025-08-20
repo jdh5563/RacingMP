@@ -25,7 +25,7 @@ namespace packageBase.userInterfaces
         {
             _helloWorldManager = ReferenceManager.Instance.GetReference<MultiplayerMenuManager>();
 
-			NetworkManager.Singleton.OnConnectionEvent += LobbyConnectionEvent;
+			NetworkManager.Singleton.OnConnectionEvent += _networkManager_LobbyConnectionEvent;
 
 			if (_joinCodeInputField != null)
             {
@@ -63,7 +63,7 @@ namespace packageBase.userInterfaces
             }
 		}
 
-		public void LobbyConnectionEvent(NetworkManager arg1, ConnectionEventData arg2)
+		private void _networkManager_LobbyConnectionEvent(NetworkManager arg1, ConnectionEventData arg2)
 		{
 			if (arg2.EventType == ConnectionEvent.ClientConnected)
             {
@@ -74,13 +74,17 @@ namespace packageBase.userInterfaces
 					_joinedPlayersText.text += $"\n{player.name}";
 				}
 
-				arg1.SceneManager.OnLoadEventCompleted += MatchStartEvent;
+				arg1.SceneManager.OnLoadEventCompleted += _networkManager_MatchStartEvent;
 			}
 		}
 
-        private void MatchStartEvent(string sceneName, LoadSceneMode loadSceneMode, System.Collections.Generic.List<ulong> clientsCompleted, System.Collections.Generic.List<ulong> clientsTimedOut)
+        private void _networkManager_MatchStartEvent(string sceneName, LoadSceneMode loadSceneMode, System.Collections.Generic.List<ulong> clientsCompleted, System.Collections.Generic.List<ulong> clientsTimedOut)
         {
-            if(sceneName == "JohnScene") ToggleMenu();
+            if (sceneName == "JohnScene")
+            {
+                SceneChangeEvent sceneChangeEvent = new(sceneName);
+                EventManager.Instance.PublishEvent<SceneChangeEvent>(in sceneChangeEvent);
+            }
         }
 	}
 }

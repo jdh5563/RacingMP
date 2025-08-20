@@ -25,14 +25,14 @@ namespace packageBase.userInterfaces
         {
             _multiplayerMenuManager = ReferenceManager.Instance.GetReference<MultiplayerMenuManager>();
 
-			NetworkManager.Singleton.OnConnectionEvent += LobbyConnectionEvent;
+			NetworkManager.Singleton.OnConnectionEvent += _networkManager_LobbyConnectionEvent;
 
 			hostServer();
 
 			base.Start();
         }
 
-        public void LobbyConnectionEvent(NetworkManager arg1, ConnectionEventData arg2)
+        private void _networkManager_LobbyConnectionEvent(NetworkManager arg1, ConnectionEventData arg2)
         {
 			if (arg2.EventType == ConnectionEvent.ClientConnected)
 			{
@@ -49,7 +49,8 @@ namespace packageBase.userInterfaces
         {
             NetworkManager.Singleton.SceneManager.LoadScene("JohnScene", LoadSceneMode.Single);
 
-            ToggleMenu();
+            SceneChangeEvent sceneChangeEvent = new("JohnScene");
+            EventManager.Instance.PublishEvent<SceneChangeEvent>(in sceneChangeEvent);
         }
 
         /// <summary>

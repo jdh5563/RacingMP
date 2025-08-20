@@ -435,8 +435,8 @@ GameObject:
   - component: {fileID: 2853934672562525349}
   - component: {fileID: 8994375659954328826}
   - component: {fileID: 8727843312195762637}
-  - component: {fileID: 6586037418384962631}
-  - component: {fileID: -7428120181318854579}
+  - component: {fileID: -7331982811376774716}
+  - component: {fileID: -9099470369273529240}
   m_Layer: 0
   m_Name: Car
   m_TagString: Car
@@ -545,7 +545,7 @@ MonoBehaviour:
   - model: {fileID: 7308497731738010968}
     collider: {fileID: 8551166045821117830}
     axle: 1
---- !u!114 &6586037418384962631
+--- !u!114 &-7331982811376774716
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -569,7 +569,7 @@ MonoBehaviour:
   RotationMaxInterpolationTime: 0.1
   ScaleLerpSmoothing: 1
   ScaleMaxInterpolationTime: 0.1
-  AuthorityMode: 0
+  AuthorityMode: 1
   TickSyncChildren: 0
   UseUnreliableDeltas: 0
   SyncPositionX: 1
@@ -591,7 +591,7 @@ MonoBehaviour:
   SwitchTransformSpaceWhenParented: 0
   Interpolate: 1
   SlerpPosition: 0
---- !u!114 &-7428120181318854579
+--- !u!114 &-9099470369273529240
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1072,7 +1072,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5050932746099996994}
   - component: {fileID: 2252239597498609063}
-  - component: {fileID: 2830232671511042973}
   - component: {fileID: 771137063764042230}
   m_Layer: 0
   m_Name: Main Camera
@@ -1147,14 +1146,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &2830232671511042973
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8702815748958620423}
-  m_Enabled: 1
 --- !u!114 &771137063764042230
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -47,6 +47,12 @@ namespace racingMP.player
             // Let the track manager know that this car has spawned in
             EventManager.Instance.PublishEvent(new EventCarSpawn() { NetObjId = NetworkObjectId });
             EventManager.Instance.SubscribeEvent(typeof(EventRaceStarted), this);
+
+            // If not the owner of this car, remove the camera to ensure only yours exists on your client side.
+            if (!IsOwner)
+            {
+                Destroy(transform.Find("Main Camera").gameObject);
+            }
 		}
 
 		private void Start()
@@ -54,26 +60,9 @@ namespace racingMP.player
             _playerInput = ReferenceManager.Instance.GetReference<PlayerInput>();
         }
 
-        /*public override void DoInit()
+        private void Update()
         {
-            base.DoInit();
-
-            _rb = GetComponent<Rigidbody>();
-            _rb.centerOfMass = _centerOfMass;
-
-            ReferenceManager.Instance.AddReference<Car>(this);
-        }*/
-
-        /*public override void DoPostInit()
-        {
-            base.DoPostInit();
-
-            _playerInput = ReferenceManager.Instance.GetReference<PlayerInput>();
-        }*/
-
-        private void FixedUpdate()
-        {
-            if (!canMove) return;
+            if (!IsOwner || !canMove) return;
 
             // Handling functionality for all wheels.
             foreach (Wheel wheel in _wheels)

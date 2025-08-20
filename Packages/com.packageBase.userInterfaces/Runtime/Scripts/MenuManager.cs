@@ -14,7 +14,7 @@ namespace packageBase.userInterfaces
     /// <summary>
     /// Class responsible for handling changing menu states and other menu logic.
     /// </summary>
-    public class MenuManager : MonoBehaviour, IMenuManager, ISubscriber<MenuInputEvent>
+    public class MenuManager : MonoBehaviour, IMenuManager, ISubscriber<MenuInputEvent>, ISubscriber<SceneChangeEvent>
     {
         #region Fields
 
@@ -45,6 +45,7 @@ namespace packageBase.userInterfaces
         private void Start()
         {
             EventManager.Instance.SubscribeEvent(typeof(MenuInputEvent), this);
+            EventManager.Instance.SubscribeEvent(typeof(SceneChangeEvent), this);
 
             _globalInputManager = ReferenceManager.Instance.GetReference<IGlobalInputManager>();
         }
@@ -216,10 +217,6 @@ namespace packageBase.userInterfaces
 
         #region Helper Functions
 
-        /// <summary>
-        /// Helper function used to toggle a new menu on, and the previous one off.
-        /// </summary>
-        /// <param name="newMenu">The new menu being opened.</param>
         private void toggleMenu(Menus newMenu)
         {
             // Using a try-catch block to ensure nothing is null.
@@ -255,7 +252,7 @@ namespace packageBase.userInterfaces
                 }
                 else
                 {
-                    _globalInputManager.ChangeCurrentInputMap("MainMap");
+                    _globalInputManager.ChangeCurrentInputMap("PlayerMap");
                 }
 
                 MenuChangeEvent menuChangeEvent = new(_previousMenu, newMenu);
@@ -285,6 +282,18 @@ namespace packageBase.userInterfaces
         public void OnEventHandler(in MenuInputEvent e)
         {
             HandleMenuInput(e.Context);
+        }
+
+        public void OnEventHandler(in SceneChangeEvent e)
+        {
+            if (e.SceneName != "MainMenu")
+            {
+                toggleMenu(Menus.None);
+            }
+            else
+            {
+                toggleMenu(Menus.MainMenu);
+            }
         }
 
         #endregion
