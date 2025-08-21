@@ -24,6 +24,8 @@ namespace racingMP.track
 
 		private int spawnIndex = 0;
 
+		private int totalCheckpoints = 0;
+
 		public override void OnNetworkSpawn()
 		{
 			base.OnNetworkSpawn();
@@ -45,6 +47,8 @@ namespace racingMP.track
 				}
 
 				GenerateTrack();
+
+				EventManager.Instance.PublishEvent(new EventTrackGenerated() { TotalCheckpoints = totalCheckpoints });
 
 				foreach (NetworkObject playerObj in NetworkManager.Singleton.SpawnManager.PlayerObjects)
 				{
@@ -78,14 +82,17 @@ namespace racingMP.track
 			track = SpawnTrackComponent(trackComponentsByName["Turn Short"], track.endPoint.position, Quaternion.Euler(0, 90, 0));
 
 			track = SpawnTrackComponent(trackPrefabsSO.checkPointPrefab, track.endPoint.position, Quaternion.Euler(0, 90, 0));
+			totalCheckpoints++;
 			track = SpawnTrackComponent(trackComponentsByName["Straight Long"], track.endPoint.position, Quaternion.Euler(0, 90, 0));
 			track = SpawnTrackComponent(trackComponentsByName["Turn Short"], track.endPoint.position, Quaternion.Euler(0, 180, 0));
 
 			track = SpawnTrackComponent(trackPrefabsSO.checkPointPrefab, track.endPoint.position, Quaternion.Euler(0, 180, 0));
+			totalCheckpoints++;
 			track = SpawnTrackComponent(trackComponentsByName["Straight Long"], track.endPoint.position, Quaternion.Euler(0, 180, 0));
 			track = SpawnTrackComponent(trackComponentsByName["Turn Short"], track.endPoint.position, Quaternion.Euler(0, -90, 0));
 
 			track = SpawnTrackComponent(trackPrefabsSO.checkPointPrefab, track.endPoint.position, Quaternion.Euler(0, -90, 0));
+			totalCheckpoints++;
 			track = SpawnTrackComponent(trackComponentsByName["Straight Long"], track.endPoint.position, Quaternion.Euler(0, -90, 0));
 			SpawnTrackComponent(trackComponentsByName["Turn Short"], track.endPoint.position, Quaternion.identity);
 		}
@@ -132,5 +139,4 @@ namespace racingMP.track
 			RequestMoveCarToStartRpc(e.NetObjId);
 		}
 	}
-
 }

@@ -1,4 +1,5 @@
 ﻿using packageBase.core;
+using racingMP.track;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
@@ -8,18 +9,30 @@ using TMPro;
 
 namespace packageBase.userInterfaces
 {
-	public class GameUIManager : NetworkBehaviour
+	public class GameUIManager : NetworkBehaviour, ISubscriber<EventTrackGenerated>, ISubscriber<EventCheckpointHit>, ISubscriber<EventCarSpawn>
 	{
 		[SerializeField] 
 		private TextMeshProUGUI _countdownText;
+		[SerializeField]
+		private TextMeshProUGUI _checkpointText;
+
+		// Make sure the total number of checkpoints is synchronized across all clients
+		private NetworkVariable<int> totalCheckpoints = new();
+		private int currentCheckpoints = 0;
 
 		private void Start()
 		{
 			DontDestroyOnLoad(gameObject);
+
+			EventManager.Instance.SubscribeEvent(typeof(EventTrackGenerated), this);
+			EventManager.Instance.SubscribeEvent(typeof(EventCheckpointHit), this);
+			EventManager.Instance.SubscribeEvent(typeof(EventCarSpawn), this);
 		}
 
 		public override void OnNetworkSpawn()
 		{
+			base.OnNetworkSpawn();
+
 			if (IsHost) NetworkManager.SceneManager.OnLoadEventCompleted += Countdown;
 		}
 
@@ -29,12 +42,6 @@ namespace packageBase.userInterfaces
 		private void Countdown(string sceneName, LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedOut)
 		{
 			if (sceneName == "JohnScene") StartCoroutine(StartRace());
-		}
-
-		[Rpc(SendTo.Server)]
-		private void RequestUpdateCountdownRpc(string text)
-		{
-			RequestUpdateCountdownRpc(text);
 		}
 
 		[Rpc(SendTo.ClientsAndHost)]
@@ -71,6 +78,31 @@ namespace packageBase.userInterfaces
 
             UpdateCountdownRpc("");
 			CountdownFinishedRpc();
+		}
+
+		/// <summary>
+		/// Set initial checkpoint text for the host
+		/// </summary>
+		public void OnEventHandler(in EventTrackGenerated e)
+		{
+			totalCheckpoints.Value = e.TotalCheckpoints;
+			_checkpointText.text = $"Checkpoints: {currentCheckpoints} / {totalCheckpoints.Value}";
+		}
+
+		/// <summary>
+		/// Update checkpoint text
+		/// </summary>
+		public void OnEventHandler(in EventCheckpointHit e)
+		{
+			if (NetworkManager.Singleton.SpawnManager.SpawnedObjects[e.NetObjId].IsOwner) _checkpointText.text = $"Checkpoints: {++currentCheckpoints} / {totalCheckpoints.Value}";
+		}
+
+		/// <summary>
+		/// Set initial checkpoint text for anyone joining the lobby
+		/// </summary>
+		public void OnEventHandler(in EventCarSpawn e)
+		{
+			if (NetworkManager.Singleton.SpawnManager.SpawnedObjects[e.NetObjId].IsOwner) _checkpointText.text = $"Checkpoints: {currentCheckpoints} / {totalCheckpoints.Value}";
 		}
 	}
 }
