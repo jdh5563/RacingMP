@@ -19,6 +19,7 @@ namespace racingMP.track
 		private const int CELL_SIZE = 10;
 
 		private Track startBlock = null;
+		private Track finishBlock = null;
 
 		private Vector3Int currentPos = Vector3Int.zero;
 

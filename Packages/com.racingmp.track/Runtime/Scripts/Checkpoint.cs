@@ -7,6 +7,8 @@ namespace racingMP.track
 {
     public class Checkpoint : MonoBehaviour
     {
+		[SerializeField] private bool isFinish;
+
 		private List<ulong> pastCars = new();
 
 		/// <summary>
@@ -17,10 +19,14 @@ namespace racingMP.track
 		{
 			ulong netObjId = other.transform.root.GetComponent<NetworkObject>().NetworkObjectId;
 
-			if (!pastCars.Contains(netObjId))
-            {
-                pastCars.Add(netObjId);
-				EventManager.Instance.PublishEvent(new EventCheckpointHit() { NetObjId = netObjId });
+			if (isFinish)
+			{
+				EventManager.Instance.PublishEvent(new EventCheckpointHit() { NetObjId = netObjId, IsFinish = isFinish });
+			}
+			else if (!pastCars.Contains(netObjId))
+			{
+				pastCars.Add(netObjId);
+				EventManager.Instance.PublishEvent(new EventCheckpointHit() { NetObjId = netObjId, IsFinish = isFinish });
 			}
 		}
 	}

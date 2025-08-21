@@ -15,6 +15,8 @@ namespace packageBase.userInterfaces
 		private TextMeshProUGUI _countdownText;
 		[SerializeField]
 		private TextMeshProUGUI _checkpointText;
+		[SerializeField]
+		private TextMeshProUGUI _roundEndText;
 
 		// Make sure the total number of checkpoints is synchronized across all clients
 		private NetworkVariable<int> totalCheckpoints = new();
@@ -89,12 +91,41 @@ namespace packageBase.userInterfaces
 			_checkpointText.text = $"Checkpoints: {currentCheckpoints} / {totalCheckpoints.Value}";
 		}
 
+		[Rpc(SendTo.ClientsAndHost)]
+		private void DisplayRoundEndTextRpc(ulong netObjId)
+		{
+			if(!NetworkManager.Singleton.SpawnManager.SpawnedObjects[netObjId].IsOwner)
+			{
+				_roundEndText.text = "You lose...";
+			}
+			else
+			{
+				_roundEndText.text = "You win!";
+			}
+		}
+
+		[Rpc(SendTo.Server)]
+		private void RequestRoundEndTextRpc(ulong netObjId)
+		{
+			DisplayRoundEndTextRpc(netObjId);
+		}
+
 		/// <summary>
 		/// Update checkpoint text
 		/// </summary>
 		public void OnEventHandler(in EventCheckpointHit e)
 		{
-			if (NetworkManager.Singleton.SpawnManager.SpawnedObjects[e.NetObjId].IsOwner) _checkpointText.text = $"Checkpoints: {++currentCheckpoints} / {totalCheckpoints.Value}";
+			if (NetworkManager.Singleton.SpawnManager.SpawnedObjects[e.NetObjId].IsOwner)
+			{
+				if (!e.IsFinish)
+				{
+					_checkpointText.text = $"Checkpoints: {++currentCheckpoints} / {totalCheckpoints.Value}";
+				}
+				else if (currentCheckpoints == totalCheckpoints.Value)
+				{
+					RequestRoundEndTextRpc(e.NetObjId);
+				}
+			}
 		}
 
 		/// <summary>
