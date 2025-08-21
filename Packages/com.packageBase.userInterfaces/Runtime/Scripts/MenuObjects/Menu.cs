@@ -12,15 +12,13 @@ namespace packageBase.userInterfaces
     {
         #region Fields
 
-        protected IMenuManager menuManager;
-
         protected List<MenuButton> menuButtons = new List<MenuButton>();
 
         public MenuButton LastSelectedButton { get; private set; }
 
         #endregion
 
-        #region InitiableBase
+        #region Unity Functions
 
         protected virtual void Awake()
         {
@@ -35,8 +33,6 @@ namespace packageBase.userInterfaces
 
         protected virtual void Start()
         {
-            menuManager = ReferenceManager.Instance.GetReference<IMenuManager>();
-
             for (int b = 0; b < menuButtons.Count; b++)
             {
                 MenuButton menuButton = menuButtons[b];
@@ -85,7 +81,9 @@ namespace packageBase.userInterfaces
         private void _button_OnClick(MenuButton menuButton) 
         {
             LastSelectedButton = menuButton;
-            menuManager.HandleMenuButtonClick(menuButton);
+
+            MenuButtonClickEvent menuButtonClickEvent = new(menuButton);
+            EventManager.Instance.PublishEvent(menuButtonClickEvent);
         }
 
         #endregion

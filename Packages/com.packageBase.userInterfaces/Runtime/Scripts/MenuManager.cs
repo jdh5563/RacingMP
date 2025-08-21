@@ -1,8 +1,8 @@
 using packageBase.audio;
 using packageBase.core;
+using packageBase.input;
 using System;
 using System.Collections.Generic;
-using Unity.Netcode;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -14,18 +14,16 @@ namespace packageBase.userInterfaces
     /// <summary>
     /// Class responsible for handling changing menu states and other menu logic.
     /// </summary>
-    public class MenuManager : MonoBehaviour, IMenuManager, ISubscriber<MenuInputEvent>, ISubscriber<SceneChangeEvent>
+    public class MenuManager : MonoBehaviour, IMenuManager
     {
         #region Fields
-
-        private IGlobalInputManager _globalInputManager;
 
         private Menus _previousMenu = Menus.None;
         private readonly List<Menu> _menuObjs = new();
 
         #endregion
 
-        #region InitiableBase
+        #region Unity Functions
 
         private void Awake()
         {
@@ -45,9 +43,8 @@ namespace packageBase.userInterfaces
         private void Start()
         {
             EventManager.Instance.SubscribeEvent(typeof(MenuInputEvent), this);
+            EventManager.Instance.SubscribeEvent(typeof(MenuButtonClickEvent), this);
             EventManager.Instance.SubscribeEvent(typeof(SceneChangeEvent), this);
-
-            _globalInputManager = ReferenceManager.Instance.GetReference<IGlobalInputManager>();
         }
 
         private void OnDestroy()
@@ -61,11 +58,15 @@ namespace packageBase.userInterfaces
 
         public Menus CurrentMenu { get; private set; } = Menus.MainMenu;
 
+        #endregion
+
+        #region Helper Functions
+
         /// <summary>
         /// Function to handle keyboard/controller input in menus.
         /// </summary>
         /// <param name="context">Unity input system object containing input information.</param>
-        private void HandleMenuInput(InputAction.CallbackContext context)
+        private void handleMenuInput(InputAction.CallbackContext context)
         {
             // No menu input should be tracked if not in a menu.
             if (CurrentMenu == Menus.None || CurrentMenu == Menus.LoadingScreen)
@@ -103,11 +104,11 @@ namespace packageBase.userInterfaces
                     Debug.Log("Scrolling");
 
                     // Creating a new axis event data object to store the move direction from the scroll wheel.
-                    AxisEventData newData = new(_globalInputManager.GetCurrentEventSystem());
+                    AxisEventData newData = new(EventSystem.current);
                     newData.moveDir = context.ReadValue<Vector2>().y > 0.0f ? MoveDirection.Up : MoveDirection.Down;
 
                     // Setting the currently selected object to move based on the axis event data above.
-                    GameObject currentSelection = _globalInputManager.GetCurrentEventSystem().currentSelectedGameObject;
+                    GameObject currentSelection = EventSystem.current.currentSelectedGameObject;
                     currentSelection.GetComponent<Selectable>().OnMove(newData);
 
                     break;
@@ -144,7 +145,7 @@ namespace packageBase.userInterfaces
             }
         }
 
-        public void HandleMenuButtonClick(MenuButton menuButton)
+        private void handleMenuButtonClick(MenuButton menuButton)
         {
             // PLAY SUBMIT/CLICK SOUND HERE.
 
@@ -178,13 +179,13 @@ namespace packageBase.userInterfaces
                 case MenuButtonTypes.Host:
 
                     toggleMenu(Menus.HostMenu);
-					break;
+                    break;
 
                 case MenuButtonTypes.HostServer:
 
                     HostMenu hostMenu = (HostMenu)_menuObjs[(int)CurrentMenu];
-					hostMenu.BeginMatch();
-					break;
+                    hostMenu.BeginMatch();
+                    break;
 
                 case MenuButtonTypes.Join:
 
@@ -213,10 +214,6 @@ namespace packageBase.userInterfaces
             }
         }
 
-        #endregion
-
-        #region Helper Functions
-
         private void toggleMenu(Menus newMenu)
         {
             // Using a try-catch block to ensure nothing is null.
@@ -234,26 +231,30 @@ namespace packageBase.userInterfaces
                 // Checking that the last selected button of the new menu has been set.
                 if (newMenuObject.LastSelectedButton != null)
                 {
-                    _globalInputManager.GetCurrentEventSystem().SetSelectedGameObject(newMenuObject.LastSelectedButton.gameObject);
+                    EventSystem.current.SetSelectedGameObject(newMenuObject.LastSelectedButton.gameObject);
                 }
                 else
                 {
                     // If this returns null, that means there are no buttons in that menu.
                     if (newMenuObject.GetMenuButtonAtIndex(0) != null)
                     {
-                        _globalInputManager.GetCurrentEventSystem().SetSelectedGameObject(newMenuObject.GetMenuButtonAtIndex(0).gameObject);
+                        EventSystem.current.SetSelectedGameObject(newMenuObject.GetMenuButtonAtIndex(0).gameObject);
                     }
                 }
 
                 // When entering the menu, switch to the menu input action map.
+                TriggerInputActionMapChangeEvent triggerInputActionMapChangeEvent = default;
+
                 if (newMenu != Menus.None)
                 {
-                    _globalInputManager.ChangeCurrentInputMap("MenuMap");
+                    triggerInputActionMapChangeEvent = new TriggerInputActionMapChangeEvent("MenuMap");
                 }
                 else
                 {
-                    _globalInputManager.ChangeCurrentInputMap("PlayerMap");
+                    triggerInputActionMapChangeEvent = new TriggerInputActionMapChangeEvent("PlayerMap");
                 }
+
+                EventManager.Instance.PublishEvent<TriggerInputActionMapChangeEvent>(in triggerInputActionMapChangeEvent);
 
                 MenuChangeEvent menuChangeEvent = new(_previousMenu, newMenu);
                 EventManager.Instance.PublishEvent<MenuChangeEvent>(in menuChangeEvent);
@@ -281,7 +282,12 @@ namespace packageBase.userInterfaces
 
         public void OnEventHandler(in MenuInputEvent e)
         {
-            HandleMenuInput(e.Context);
+            handleMenuInput(e.Context);
+        }
+
+        public void OnEventHandler(in MenuButtonClickEvent e)
+        {
+            handleMenuButtonClick(e.ClickedMenuButton);
         }
 
         public void OnEventHandler(in SceneChangeEvent e)

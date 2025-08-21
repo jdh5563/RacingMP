@@ -1,0 +1,20 @@
+{
+    "name": "racingMP.player.runtime",
+    "rootNamespace": "racingMP.player",
+    "references": [
+        "GUID:6a1b39909af256b489b52845b0243be0",
+        "GUID:4bd7508eaa6c78143b769eeefc5f33ba",
+        "GUID:1491147abca9d7d4bb7105af628b223e"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [
+        ""
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

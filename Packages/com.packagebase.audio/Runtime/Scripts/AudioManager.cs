@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace packageBase.audio
 {
-    public class AudioManager : MonoBehaviour, ISystem, ISubscriber<PlaySoundEventFinal>
+    public class AudioManager : MonoBehaviour, ISystem, ISubscriber<PlaySoundEventFinish>
     {
         private void Awake()
         {
@@ -14,7 +14,7 @@ namespace packageBase.audio
 
         private void Start()
         {
-            EventManager.Instance.SubscribeEvent(typeof(PlaySoundEventFinal), this);
+            EventManager.Instance.SubscribeEvent(typeof(PlaySoundEventFinish), this);
         }
 
         private void OnDestroy()
@@ -29,7 +29,7 @@ namespace packageBase.audio
             audioSource.PlayOneShot(audioClip);
         }
 
-        public void OnEventHandler(in PlaySoundEventFinal e)
+        public void OnEventHandler(in PlaySoundEventFinish e)
         {
             PlaySound(e.PlaySoundEventStart.AudioSource, e.PlaySoundEventStart.AudioClip, e.Volume);
         }

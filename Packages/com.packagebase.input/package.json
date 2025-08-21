@@ -1,0 +1,11 @@
+{
+  "name": "com.packagebase.input",
+  "version": "1.0.0",
+  "displayName": "packageBase_input",
+  "description": "Package to create input functionality.",
+  "unity": "6000.0",
+  "author": {
+    "name": "Michael Santos",
+    "url": "https://people.rit.edu/mjs8837"
+  }
+}

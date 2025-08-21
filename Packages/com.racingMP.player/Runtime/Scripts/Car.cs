@@ -1,4 +1,5 @@
 using packageBase.core;
+using packageBase.input;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ namespace racingMP.player
 {
     /// <summary>
     /// Class representing a car.
-    /// Inherits from InitableBase in <see cref="packageBase.core"/>.
+    /// Inherits from Unity Functions in <see cref="packageBase.core"/>.
     /// </summary>
     public class Car : NetworkBehaviour, ISystem, ISubscriber<EventRaceStarted>
     {

@@ -1,0 +1,16 @@
+{
+    "name": "packageBase.audio.runtime",
+    "rootNamespace": "packageBase.audio",
+    "references": [
+        "GUID:6a1b39909af256b489b52845b0243be0"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

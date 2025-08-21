@@ -1,11 +1,7 @@
-using System.Collections.Generic;
-using UnityEngine;
-using Unity.Netcode;
 using packageBase.core;
-using racingMP.player;
-using System.Collections;
-using UnityEngine.SceneManagement;
-using System;
+using System.Collections.Generic;
+using Unity.Netcode;
+using UnityEngine;
 
 namespace racingMP.track
 {

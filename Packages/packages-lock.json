@@ -12,6 +12,12 @@
       "source": "embedded",
       "dependencies": {}
     },
+    "com.packagebase.input": {
+      "version": "file:com.packagebase.input",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.packagebase.settings": {
       "version": "file:com.packagebase.settings",
       "depth": 0,

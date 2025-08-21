@@ -30,21 +30,6 @@ public enum MenuButtonTypes
 }
 
 /// <summary>
-/// Enum to represent the different menu input types.
-/// </summary>
-public enum MenuInputTypes
-{
-    Point,
-    LeftClick,
-    MiddleClick,
-    RightClick,
-    ScrollWheel,
-    Move,
-    Submit,
-    Cancel
-}
-
-/// <summary>
 /// Enum to represent the different slider types in the menus.
 /// </summary>
 public enum SliderTypes
@@ -54,6 +39,9 @@ public enum SliderTypes
     MusicVolume
 }
 
+/// <summary>
+/// Enum to represent the different types of loading bars that can exist in the project.
+/// </summary>
 public enum LoadingBarTypes
 {
     SmoothLinear,

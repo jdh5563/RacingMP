@@ -1,16 +1,17 @@
 ﻿using packageBase.core;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
-using UnityEngine.SceneManagement;
 using UnityEngine;
-using System.Collections;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 namespace packageBase.userInterfaces
 {
 	public class GameUIManager : NetworkBehaviour
 	{
-		[SerializeField] private TextMeshProUGUI countdownText;
+		[SerializeField] 
+		private TextMeshProUGUI _countdownText;
 
 		private void Start()
 		{
@@ -39,13 +40,13 @@ namespace packageBase.userInterfaces
 		[Rpc(SendTo.ClientsAndHost)]
 		private void UpdateCountdownRpc(string text)
 		{
-			countdownText.text = text;
+			_countdownText.text = text;
         }
 
 		[Rpc(SendTo.ClientsAndHost)]
 		private void CountdownFinishedRpc()
 		{
-            // Need to publish this event in the call back to the clients and host to ensure everyone recieves the event data.
+            // Need to publish this event in the call back to the clients and host to ensure everyone receives the event data.
             EventManager.Instance.PublishEvent(new EventRaceStarted());
         }
 

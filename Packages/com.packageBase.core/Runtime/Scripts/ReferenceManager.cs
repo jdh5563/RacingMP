@@ -5,7 +5,7 @@ using UnityEngine;
 namespace packageBase.core
 {
     /// <summary>
-    /// Class used to store references to different InitableBase objects in the project.
+    /// Class used to store references to different Unity Functions objects in the project.
     /// </summary>
     public class ReferenceManager : MonoBehaviour, IReferenceManager
     {
@@ -17,7 +17,7 @@ namespace packageBase.core
 
         #endregion
 
-        #region InitableBase
+        #region Unity Functions
 
         private void Awake()
         {

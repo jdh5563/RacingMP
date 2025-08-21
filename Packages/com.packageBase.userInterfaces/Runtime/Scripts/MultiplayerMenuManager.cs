@@ -1,12 +1,12 @@
+using packageBase.core;
 using System.Threading.Tasks;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
-using Unity.Services.Relay.Models;
 using Unity.Services.Relay;
+using Unity.Services.Relay.Models;
 using UnityEngine;
-using packageBase.core;
 
 namespace packageBase.userInterfaces
 {
@@ -19,25 +19,6 @@ namespace packageBase.userInterfaces
         {
 			ReferenceManager.Instance.AddReference<MultiplayerMenuManager>(this);
         }
-
-		/*void SubmitNewPosition()
-		{
-			if (NetworkManager.Singleton.IsServer && !NetworkManager.Singleton.IsClient)
-			{
-				foreach (ulong uid in NetworkManager.Singleton.ConnectedClientsIds)
-				{
-					NetworkObject playerObject = NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject(uid);
-					HelloWorldPlayer player = playerObject.GetComponent<HelloWorldPlayer>();
-					player.Move();
-				}
-			}
-			else if (NetworkManager.Singleton.IsClient)
-			{
-				NetworkObject playerObject = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject();
-				HelloWorldPlayer player = playerObject.GetComponent<HelloWorldPlayer>();
-				player.Move();
-			}
-		}*/
 
 		public async Task<string> StartHostWithRelay(string connectionType)
 		{

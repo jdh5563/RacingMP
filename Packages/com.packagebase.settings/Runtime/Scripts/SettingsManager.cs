@@ -5,11 +5,11 @@ using UnityEngine;
 
 namespace packageBase.settings
 {
-    public class SettingsManager : MonoBehaviour, ISystem, ISubscriber<MenuSliderChangeEvent>, ISubscriber<PlaySoundEventStart>
+    public class SettingsManager : MonoBehaviour, ISettingsManager
     {
-        public float MasterVolume { get; private set; }
-        public float SFXVolume { get; private set; }
-        public float MusicVolume { get; private set; }
+        private float _masterVolume;
+        private float _sfxVolume;
+        private float _musicVolume;
 
         private void Awake()
         {
@@ -41,19 +41,19 @@ namespace packageBase.settings
             {
                 case SliderTypes.SFXVolume:
 
-                    SFXVolume = value;
+                    _sfxVolume = value;
 
                     break;
 
                 case SliderTypes.MusicVolume:
 
-                    MusicVolume = value;
+                    _musicVolume = value;
 
                     break;
 
                 case SliderTypes.MasterVolume:
 
-                    MasterVolume = value;
+                    _masterVolume = value;
 
                     break;
 
@@ -67,19 +67,19 @@ namespace packageBase.settings
 
         public void OnEventHandler(in PlaySoundEventStart e)
         {
-            float targetVolume = MasterVolume;
+            float targetVolume = _masterVolume;
 
             switch (e.AudioType)
             {
                 case AudioTypes.SFX:
 
-                    targetVolume *= SFXVolume;
+                    targetVolume *= _sfxVolume;
 
                     break;
 
                 case AudioTypes.Music:
 
-                    targetVolume *= MusicVolume;
+                    targetVolume *= _musicVolume;
 
                     break;
 
@@ -90,8 +90,8 @@ namespace packageBase.settings
                     break;
             }
 
-            PlaySoundEventFinal playSoundEventFinal = new (e, targetVolume);
-            EventManager.Instance.PublishEvent<PlaySoundEventFinal>(in playSoundEventFinal);
+            PlaySoundEventFinish playSoundEventFinish = new (e, targetVolume);
+            EventManager.Instance.PublishEvent<PlaySoundEventFinish>(in playSoundEventFinish);
         }
     }
 }

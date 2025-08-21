@@ -539,7 +539,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  countdownText: {fileID: 59943860}
+  _countdownText: {fileID: 59943860}
 --- !u!1001 &521490820
 PrefabInstance:
   m_ObjectHideFlags: 0

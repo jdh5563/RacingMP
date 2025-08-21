@@ -1,0 +1,16 @@
+{
+    "name": "packageBase.userInterface.editor",
+    "rootNamespace": "packageBase.userInterface",
+    "references": [
+        "GUID:8e8844f859460694599c757ebe120bd7"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

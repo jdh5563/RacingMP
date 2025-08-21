@@ -1,6 +1,5 @@
 using packageBase.core;
-using System;
-using UnityEngine.InputSystem;
+using packageBase.input;
 
 namespace packageBase.userInterfaces
 {
@@ -8,17 +7,11 @@ namespace packageBase.userInterfaces
     /// Interface used by the menu manager.
     /// Defines functionality necessary for the menu manager.
     /// </summary>
-    public interface IMenuManager : ISystem
+    public interface IMenuManager : ISystem, ISubscriber<MenuInputEvent>, ISubscriber<MenuButtonClickEvent>, ISubscriber<SceneChangeEvent>
     {
         /// <summary>
         /// The current active menu.
         /// </summary>
         Menus CurrentMenu { get; }
-
-        /// <summary>
-        /// Function to handle when a menu button is clicked/selected.
-        /// </summary>
-        /// <param name="menuButton">The button that was pressed.</param>
-        void HandleMenuButtonClick(MenuButton menuButton);
     }
 }
