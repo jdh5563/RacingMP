@@ -1,5 +1,75 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &4451316362967777187
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 8097043423570952465}
+    m_Modifications:
+    - target: {fileID: 3825391293360671174, guid: 8a1b9f61b95b12a4781c98ee60628c40, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.20000002
+      objectReference: {fileID: 0}
+    - target: {fileID: 3825391293360671174, guid: 8a1b9f61b95b12a4781c98ee60628c40, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.038000003
+      objectReference: {fileID: 0}
+    - target: {fileID: 3825391293360671174, guid: 8a1b9f61b95b12a4781c98ee60628c40, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3825391293360671174, guid: 8a1b9f61b95b12a4781c98ee60628c40, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 3825391293360671174, guid: 8a1b9f61b95b12a4781c98ee60628c40, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3825391293360671174, guid: 8a1b9f61b95b12a4781c98ee60628c40, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 3825391293360671174, guid: 8a1b9f61b95b12a4781c98ee60628c40, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3825391293360671174, guid: 8a1b9f61b95b12a4781c98ee60628c40, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 3825391293360671174, guid: 8a1b9f61b95b12a4781c98ee60628c40, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3825391293360671174, guid: 8a1b9f61b95b12a4781c98ee60628c40, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3825391293360671174, guid: 8a1b9f61b95b12a4781c98ee60628c40, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 3825391293360671174, guid: 8a1b9f61b95b12a4781c98ee60628c40, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4493842224384234364, guid: 8a1b9f61b95b12a4781c98ee60628c40, type: 3}
+      propertyPath: m_Name
+      value: FinishArch
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8a1b9f61b95b12a4781c98ee60628c40, type: 3}
+--- !u!4 &635224945453004389 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3825391293360671174, guid: 8a1b9f61b95b12a4781c98ee60628c40, type: 3}
+  m_PrefabInstance: {fileID: 4451316362967777187}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5274266751761706191
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13,10 +83,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: 7bcffcc1edbaffc4ca2f114afaba1691, type: 2}
     - target: {fileID: 1262397204944494054, guid: ec3db7cf32a4f4442b7826c2422fcfd8, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1713707470661479720, guid: ec3db7cf32a4f4442b7826c2422fcfd8, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
@@ -70,7 +136,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3613117383629387620, guid: ec3db7cf32a4f4442b7826c2422fcfd8, type: 3}
       propertyPath: m_Name
-      value: End Block
+      value: Finish Block
       objectReference: {fileID: 0}
     - target: {fileID: 3789860083187306003, guid: ec3db7cf32a4f4442b7826c2422fcfd8, type: 3}
       propertyPath: m_Mesh
@@ -88,22 +154,29 @@ PrefabInstance:
       propertyPath: m_VersionIndex
       value: 1933
       objectReference: {fileID: 0}
-    - target: {fileID: 6031021654673173343, guid: ec3db7cf32a4f4442b7826c2422fcfd8, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 7732543124844311551, guid: ec3db7cf32a4f4442b7826c2422fcfd8, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 8845299679033779695, guid: ec3db7cf32a4f4442b7826c2422fcfd8, type: 3}
+    - {fileID: 628206877686824875, guid: ec3db7cf32a4f4442b7826c2422fcfd8, type: 3}
+    - {fileID: 8359099261799779492, guid: ec3db7cf32a4f4442b7826c2422fcfd8, type: 3}
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 4138684579889606110, guid: ec3db7cf32a4f4442b7826c2422fcfd8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 635224945453004389}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3613117383629387620, guid: ec3db7cf32a4f4442b7826c2422fcfd8, type: 3}
       insertIndex: -1
       addedObject: {fileID: -8434861599881635798}
   m_SourcePrefab: {fileID: 100100000, guid: ec3db7cf32a4f4442b7826c2422fcfd8, type: 3}
+--- !u!4 &8097043423570952465 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4138684579889606110, guid: ec3db7cf32a4f4442b7826c2422fcfd8, type: 3}
+  m_PrefabInstance: {fileID: 5274266751761706191}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8869182733837687723 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3613117383629387620, guid: ec3db7cf32a4f4442b7826c2422fcfd8, type: 3}
@@ -121,7 +194,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 0
+  GlobalObjectIdHash: 37037072
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1

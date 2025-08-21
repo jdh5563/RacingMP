@@ -6,7 +6,7 @@ namespace racingMP.track
 	public class TrackPrefabs : ScriptableObject
 	{
 		public GameObject startPrefab;
-		public GameObject endPrefab;
+		public GameObject finishPrefab;
 		public GameObject checkPointPrefab;
 
 		public GameObject[] trackComponentPrefabs;
