@@ -9,7 +9,7 @@ namespace racingMP.track
     {
 		[SerializeField] private bool isFinish;
 
-		private List<ulong> pastCars = new();
+		private List<ulong> passedCars = new();
 
 		/// <summary>
 		/// If the car hitting this checkpoint has not passed it yet, mark it and signal a checkpoint event
@@ -23,9 +23,9 @@ namespace racingMP.track
 			{
 				EventManager.Instance.PublishEvent(new EventCheckpointHit() { NetObjId = netObjId, IsFinish = isFinish });
 			}
-			else if (!pastCars.Contains(netObjId))
+			else if (!passedCars.Contains(netObjId))
 			{
-				pastCars.Add(netObjId);
+				passedCars.Add(netObjId);
 				EventManager.Instance.PublishEvent(new EventCheckpointHit() { NetObjId = netObjId, IsFinish = isFinish });
 			}
 		}
