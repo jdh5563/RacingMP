@@ -1,3 +1,5 @@
+using packageBase.core;
+
 namespace packageBase.input
 {
     public struct TriggerInputActionMapChangeEvent

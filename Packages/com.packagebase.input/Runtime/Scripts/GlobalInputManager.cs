@@ -1,6 +1,5 @@
 using packageBase.core;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 namespace packageBase.input

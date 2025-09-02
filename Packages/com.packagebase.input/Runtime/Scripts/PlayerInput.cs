@@ -39,6 +39,13 @@ namespace packageBase.input
                             _playerInputActions[a].canceled += _handleMoveInput;
 
                             break;
+
+                        case "Pause":
+
+                            _playerInputActions[a].performed += _handlePauseInput;
+
+                            break;
+
                         default:
                             break;
                     }
@@ -49,6 +56,12 @@ namespace packageBase.input
         private void _handleMoveInput(InputAction.CallbackContext context)
         {
             MoveInput = context.ReadValue<Vector2>();
+        }
+
+        private void _handlePauseInput(InputAction.CallbackContext context)
+        {
+            PlayerPauseInputEvent playerPauseInputEvent = new();
+            EventManager.Instance.PublishEvent(playerPauseInputEvent);
         }
 
         private void OnDestroy()

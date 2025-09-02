@@ -7,7 +7,7 @@ namespace packageBase.userInterfaces
     /// Interface used by the menu manager.
     /// Defines functionality necessary for the menu manager.
     /// </summary>
-    public interface IMenuManager : ISystem, ISubscriber<MenuInputEvent>, ISubscriber<MenuButtonClickEvent>, ISubscriber<SceneChangeEvent>
+    public interface IMenuManager : ISystem, ISubscriber<MenuInputEvent>, ISubscriber<MenuButtonClickEvent>, ISubscriber<SceneChangeEvent>, ISubscriber<PlayerPauseInputEvent>
     {
         /// <summary>
         /// The current active menu.

@@ -44,6 +44,7 @@ namespace packageBase.userInterfaces
         {
             EventManager.Instance.SubscribeEvent(typeof(MenuInputEvent), this);
             EventManager.Instance.SubscribeEvent(typeof(MenuButtonClickEvent), this);
+            EventManager.Instance.SubscribeEvent(typeof(PlayerPauseInputEvent), this);
             EventManager.Instance.SubscribeEvent(typeof(SceneChangeEvent), this);
         }
 
@@ -300,6 +301,16 @@ namespace packageBase.userInterfaces
             {
                 toggleMenu(Menus.MainMenu);
             }
+        }
+
+        public void OnEventHandler(in PlayerPauseInputEvent e)
+        {
+            if (CurrentMenu != Menus.None)
+            {
+                return;
+            }
+
+            toggleMenu(Menus.PauseMenu);
         }
 
         #endregion
