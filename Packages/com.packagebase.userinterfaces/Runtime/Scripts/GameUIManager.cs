@@ -6,6 +6,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.UI;
 
 namespace packageBase.userInterfaces
 {
@@ -15,6 +16,7 @@ namespace packageBase.userInterfaces
 		[SerializeField] private TextMeshProUGUI _checkpointText;
 		[SerializeField] private TextMeshProUGUI _raceEndTimerText;
 		[SerializeField] private Transform _roundEndPanel;
+		[SerializeField] private Button _nextRoundButton;
 
 		private List<TextMeshProUGUI> _playerPointsTexts = new();
 		private Vector3 basePointsTextPosition = new Vector3(-75, 100, 0);
@@ -46,7 +48,32 @@ namespace packageBase.userInterfaces
 			{
 				NetworkManager.SceneManager.OnLoadEventCompleted += Countdown;
 				NetworkManager.OnClientConnectedCallback += ClientConnected;
+				_nextRoundButton.onClick.AddListener(() =>
+				{
+					List<ulong> keysToModify = new List<ulong>(playerFinishDict.Keys);
+					foreach (ulong clientId in keysToModify)
+					{
+						playerFinishDict[clientId] = 0;
+					}
+
+					StartNextRoundRpc();
+
+					StartCoroutine(StartRace());
+				});
 			}
+		}
+
+		[Rpc(SendTo.ClientsAndHost)]
+		private void StartNextRoundRpc()
+		{
+			currentCheckpoints = 0;
+			numPlayersFinished = 0;
+			_roundEndPanel.gameObject.SetActive(false);
+			_nextRoundButton.gameObject.SetActive(false);
+
+			EventManager.Instance.PublishEvent(new EventResetLevel());
+
+			_checkpointText.text = $"Checkpoints: {currentCheckpoints} / {totalCheckpoints.Value}";
 		}
 
 		/// <summary>
@@ -113,8 +140,6 @@ namespace packageBase.userInterfaces
 		/// </summary>
 		private IEnumerator StartRace()
 		{
-			_roundEndPanel.gameObject.SetActive(false);
-
 			yield return new WaitForSeconds(1);
 
 			UpdateCountdownRpc("3");
@@ -133,15 +158,6 @@ namespace packageBase.userInterfaces
 			CountdownFinishedRpc();
 		}
 
-		/// <summary>
-		/// Set initial checkpoint text for the host
-		/// </summary>
-		public void OnEventHandler(in EventTrackGenerated e)
-		{
-			totalCheckpoints.Value = e.TotalCheckpoints;
-			_checkpointText.text = $"Checkpoints: {currentCheckpoints} / {totalCheckpoints.Value}";
-		}
-
 		[Rpc(SendTo.ClientsAndHost)]
 		private void DisplayRaceEndTimerTextRpc(string time)
 		{
@@ -157,6 +173,8 @@ namespace packageBase.userInterfaces
 			{
 				DisplayPlayerPointsTextRpc(clientId, playerFinishDict[clientId]);
 			}
+
+			_nextRoundButton.gameObject.SetActive(true);
 		}
 
 		[Rpc(SendTo.ClientsAndHost)]
@@ -241,6 +259,15 @@ namespace packageBase.userInterfaces
 			{
 				_checkpointText.text = $"Checkpoints: {currentCheckpoints} / {totalCheckpoints.Value}";
 			}
+		}
+
+		/// <summary>
+		/// Set initial checkpoint text for the host
+		/// </summary>
+		public void OnEventHandler(in EventTrackGenerated e)
+		{
+			totalCheckpoints.Value = e.TotalCheckpoints;
+			_checkpointText.text = $"Checkpoints: {currentCheckpoints} / {totalCheckpoints.Value}";
 		}
 	}
 }

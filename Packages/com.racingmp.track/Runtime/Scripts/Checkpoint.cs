@@ -5,11 +5,16 @@ using UnityEngine;
 
 namespace racingMP.track
 {
-    public class Checkpoint : MonoBehaviour
+    public class Checkpoint : MonoBehaviour, ISubscriber<EventResetLevel>
     {
 		[SerializeField] private bool isFinish;
 
 		private List<ulong> passedCars = new();
+
+		private void Start()
+		{
+			EventManager.Instance.SubscribeEvent(typeof(EventResetLevel), this);
+		}
 
 		/// <summary>
 		/// If the car hitting this checkpoint has not passed it yet, mark it and signal a checkpoint event
@@ -28,6 +33,11 @@ namespace racingMP.track
 				passedCars.Add(clientId);
 				EventManager.Instance.PublishEvent(new EventCheckpointHit() { ClientId = clientId, IsFinish = isFinish });
 			}
+		}
+
+		public void OnEventHandler(in EventResetLevel e)
+		{
+			passedCars.Clear();
 		}
 	}
 }

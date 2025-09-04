@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace racingMP.track
 {
-	public class TrackManager : NetworkBehaviour, ISystem, ISubscriber<EventCarSpawn>
+	public class TrackManager : NetworkBehaviour, ISystem, ISubscriber<EventCarSpawn>, ISubscriber<EventResetLevel>
 	{
 		[SerializeField] private TrackPrefabs trackPrefabsSO;
 		[SerializeField] private int gridWidth;
@@ -35,26 +35,7 @@ namespace racingMP.track
 			{
 				EventManager.Instance.SubscribeEvent(typeof(EventCarSpawn), this);
 
-				worldGrid = new Track[gridWidth, gridHeight, gridDepth];
-
-				foreach (GameObject track in trackPrefabsSO.trackComponentPrefabs)
-				{
-					trackComponentsByName.Add(track.name, track);
-				}
-
-				foreach (GameObject track in trackPrefabsSO.completeTrackPrefabs)
-				{
-					completeTracksByName.Add(track.name, track);
-				}
-
-				GenerateTrack();
-
-				EventManager.Instance.PublishEvent(new EventTrackGenerated() { TotalCheckpoints = totalCheckpoints });
-
-				foreach (NetworkObject playerObj in NetworkManager.Singleton.SpawnManager.PlayerObjects)
-				{
-					MoveCarToStartRpc(playerObj.NetworkObjectId);
-				}
+				InitLevel();
 			}
 		}
 
@@ -62,12 +43,38 @@ namespace racingMP.track
 		private void Start()
 		{
 			DontDestroyOnLoad(gameObject);
+
+			EventManager.Instance.SubscribeEvent(typeof(EventResetLevel), this);
 		}
 
 		// Update is called once per frame
 		private void Update()
 		{
 
+		}
+
+		private void InitLevel()
+		{
+			worldGrid = new Track[gridWidth, gridHeight, gridDepth];
+
+			foreach (GameObject track in trackPrefabsSO.trackComponentPrefabs)
+			{
+				trackComponentsByName.Add(track.name, track);
+			}
+
+			foreach (GameObject track in trackPrefabsSO.completeTrackPrefabs)
+			{
+				completeTracksByName.Add(track.name, track);
+			}
+
+			GenerateTrack();
+
+			EventManager.Instance.PublishEvent(new EventTrackGenerated() { TotalCheckpoints = totalCheckpoints });
+
+			foreach (NetworkObject playerObj in NetworkManager.Singleton.SpawnManager.PlayerObjects)
+			{
+				MoveCarToStartRpc(playerObj.NetworkObjectId, startBlock.transform.Find("SpawnPoints").GetChild(spawnIndex++).position, startBlock.transform.forward);
+			}
 		}
 
 		/// <summary>
@@ -124,20 +131,32 @@ namespace racingMP.track
 		}
 
 		[Rpc(SendTo.ClientsAndHost)]
-		private void MoveCarToStartRpc(ulong networkObjectId)
+		private void MoveCarToStartRpc(ulong networkObjectId, Vector3 spawnPosition, Vector3 spawnForward)
 		{
-			NetworkManager.Singleton.SpawnManager.SpawnedObjects[networkObjectId].transform.position = startBlock.transform.Find("SpawnPoints").GetChild(spawnIndex++).position;
+			NetworkManager.Singleton.SpawnManager.SpawnedObjects[networkObjectId].transform.SetPositionAndRotation(spawnPosition, Quaternion.LookRotation(spawnForward));
 		}
 
 		[Rpc(SendTo.Server)]
 		private void RequestMoveCarToStartRpc(ulong networkObjectId)
 		{
-			MoveCarToStartRpc(networkObjectId);
+			MoveCarToStartRpc(networkObjectId, startBlock.transform.Find("SpawnPoints").GetChild(spawnIndex++).position, startBlock.transform.forward);
 		}
 
 		public void OnEventHandler(in EventCarSpawn e)
 		{
 			RequestMoveCarToStartRpc(e.NetObjId);
+		}
+
+		public void OnEventHandler(in EventResetLevel e)
+		{
+			if (!IsServer) return;
+
+			spawnIndex = 0;
+
+			foreach(NetworkObject player in NetworkManager.Singleton.SpawnManager.PlayerObjects)
+			{
+				MoveCarToStartRpc(player.NetworkObjectId, startBlock.transform.Find("SpawnPoints").GetChild(spawnIndex++).position, startBlock.transform.forward);
+			}
 		}
 	}
 }

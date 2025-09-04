@@ -9,7 +9,7 @@ namespace racingMP.player
     /// Class representing a car.
     /// Inherits from Unity Functions in <see cref="packageBase.core"/>.
     /// </summary>
-    public class Car : NetworkBehaviour, ISystem, ISubscriber<EventRaceStarted>
+    public class Car : NetworkBehaviour, ISystem, ISubscriber<EventRaceStarted>, ISubscriber<EventResetLevel>
     {
         [SerializeField]
         private Drive _drive;
@@ -48,6 +48,7 @@ namespace racingMP.player
             // Let the track manager know that this car has spawned in
             EventManager.Instance.PublishEvent(new EventCarSpawn() { NetObjId = NetworkObjectId });
             EventManager.Instance.SubscribeEvent(typeof(EventRaceStarted), this);
+            EventManager.Instance.SubscribeEvent(typeof(EventResetLevel), this);
 
             // If not the owner of this car, remove the camera to ensure only yours exists on your client side.
             if (!IsOwner)
@@ -76,6 +77,17 @@ namespace racingMP.player
 		public void OnEventHandler(in EventRaceStarted e)
 		{
             canMove = true;
+		}
+
+		public void OnEventHandler(in EventResetLevel e)
+		{
+            canMove = false;
+
+			foreach (Wheel wheel in _wheels)
+			{
+				wheel.GenerateTorque(_drive, 0);
+				wheel.Steer(0);
+			}
 		}
 	}
 }
