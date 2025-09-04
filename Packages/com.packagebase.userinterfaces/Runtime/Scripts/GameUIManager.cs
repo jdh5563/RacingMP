@@ -17,6 +17,8 @@ namespace packageBase.userInterfaces
 		[SerializeField] private Transform _roundEndPanel;
 
 		private List<TextMeshProUGUI> _playerPointsTexts = new();
+		private Vector3 basePointsTextPosition = new Vector3(-75, 100, 0);
+		private int pointsTextOffset = -75;
 
 		// Make sure the total number of checkpoints is synchronized across all clients
 		private NetworkVariable<int> totalCheckpoints = new();
@@ -54,19 +56,24 @@ namespace packageBase.userInterfaces
 		[Rpc(SendTo.ClientsAndHost)]
 		private void SendPlayerPointsTextRpc(ulong newClientId)
 		{
+			int numPlayers = NetworkManager.Singleton.SpawnManager.PlayerObjects.Count;
 			if (NetworkManager.Singleton.SpawnManager.PlayerObjects[(int)newClientId].IsOwner)
 			{
-				for (int i = 0; i < NetworkManager.Singleton.SpawnManager.PlayerObjects.Count; i++)
+				for (int i = 0; i < numPlayers; i++)
 				{
 					_playerPointsTexts.Add(Instantiate(new GameObject(), _roundEndPanel).AddComponent<TextMeshProUGUI>());
-					_playerPointsTexts[^1].text = "0";
-					// There will probably be more arguments in the function that will make this not redundant
+					_playerPointsTexts[^1].alignment = TextAlignmentOptions.MidlineLeft;
+					_playerPointsTexts[^1].rectTransform.anchoredPosition = new Vector3(basePointsTextPosition.x, basePointsTextPosition.y + pointsTextOffset * i, basePointsTextPosition.z);
+					_playerPointsTexts[^1].text = $"Player {i + 1}: 0";
+					// There will be more functionality to make this not redundant like filling the new object with current info instead of defaults
 				}
 			}
 			else
 			{
 				_playerPointsTexts.Add(Instantiate(new GameObject(), _roundEndPanel).AddComponent<TextMeshProUGUI>());
-				_playerPointsTexts[^1].text = "0";
+				_playerPointsTexts[^1].alignment = TextAlignmentOptions.MidlineLeft;
+				_playerPointsTexts[^1].rectTransform.anchoredPosition = new Vector3(basePointsTextPosition.x, basePointsTextPosition.y + pointsTextOffset * (numPlayers - 1), basePointsTextPosition.z);
+				_playerPointsTexts[^1].text = $"Player {numPlayers}: 0";
 			}
 		}
 
@@ -158,7 +165,8 @@ namespace packageBase.userInterfaces
 			_roundEndPanel.gameObject.SetActive(true); // Maybe move this to somewhere else so it's only called once?
 
 			TextMeshProUGUI textObj = _playerPointsTexts[(int)clientId];
-			textObj.text = $"{int.Parse(textObj.text) + points}";
+			string[] pointsTextSplit = textObj.text.Split(':');
+			textObj.text = $"{pointsTextSplit[0]}: {int.Parse(pointsTextSplit[1].Trim()) + points}";
 		}
 
 		/// <summary>
