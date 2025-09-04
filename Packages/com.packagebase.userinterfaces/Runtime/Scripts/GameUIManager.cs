@@ -11,12 +11,12 @@ namespace packageBase.userInterfaces
 {
 	public class GameUIManager : NetworkBehaviour, ISubscriber<EventTrackGenerated>, ISubscriber<EventCheckpointHit>, ISubscriber<EventCarSpawn>
 	{
-		[SerializeField] 
-		private TextMeshProUGUI _countdownText;
-		[SerializeField]
-		private TextMeshProUGUI _checkpointText;
-		[SerializeField]
-		private TextMeshProUGUI _raceEndTimerText;
+		[SerializeField] private TextMeshProUGUI _countdownText;
+		[SerializeField] private TextMeshProUGUI _checkpointText;
+		[SerializeField] private TextMeshProUGUI _raceEndTimerText;
+		[SerializeField] private Transform _roundEndPanel;
+
+		private List<TextMeshProUGUI> _playerPointsTexts = new();
 
 		// Make sure the total number of checkpoints is synchronized across all clients
 		private NetworkVariable<int> totalCheckpoints = new();
@@ -47,18 +47,33 @@ namespace packageBase.userInterfaces
 			}
 		}
 
-		private void ClientConnected(ulong clientId)
+		[Rpc(SendTo.ClientsAndHost)]
+		private void SendPlayerPointsTextRpc(ulong newClientId, int numTexts)
 		{
-			ServerInitPlayerFinishDictRpc(NetworkManager.SpawnManager.PlayerObjects[^1].NetworkObjectId);
+			if (NetworkManager.Singleton.SpawnManager.PlayerObjects[(int)newClientId].IsOwner)
+			{
+				for (int i = 0; i < numTexts; i++)
+				{
+					_playerPointsTexts.Add(Instantiate(new GameObject(), _roundEndPanel).AddComponent<TextMeshProUGUI>());
+					_playerPointsTexts[^1].text = "0";
+					// There will probably be more arguments in the function that will make this not redundant
+				}
+			}
+			else
+			{
+				_playerPointsTexts.Add(Instantiate(new GameObject(), _roundEndPanel).AddComponent<TextMeshProUGUI>());
+				_playerPointsTexts[^1].text = "0";
+			}
 		}
 
-		/// <summary>
-		/// Initializes the dictionary containing player scores
-		/// </summary>
-		[Rpc(SendTo.Server)]
-		private void ServerInitPlayerFinishDictRpc(ulong netObjId)
+		private void ClientConnected(ulong clientId)
 		{
-			playerFinishDict.Add(netObjId, 0);
+			if (IsServer)
+			{
+				playerFinishDict.Add(clientId, 0);
+
+				SendPlayerPointsTextRpc(clientId, _playerPointsTexts.Count + 1);
+			}
 		}
 
 		/// <summary>
@@ -87,6 +102,8 @@ namespace packageBase.userInterfaces
 		/// </summary>
 		private IEnumerator StartRace()
 		{
+			_roundEndPanel.gameObject.SetActive(false);
+
 			yield return new WaitForSeconds(1);
 
 			UpdateCountdownRpc("3");
@@ -120,14 +137,31 @@ namespace packageBase.userInterfaces
 			_raceEndTimerText.text = time;
 		}
 
+		private void EndRace()
+		{
+			foreach(ulong clientId in playerFinishDict.Keys)
+			{
+				DisplayPlayerPointsTextRpc(clientId, playerFinishDict[clientId]);
+			}
+		}
+
+		[Rpc(SendTo.ClientsAndHost)]
+		private void DisplayPlayerPointsTextRpc(ulong clientId, int points)
+		{
+			_roundEndPanel.gameObject.SetActive(true); // Maybe move this to somewhere else so it's only called once?
+
+			TextMeshProUGUI textObj = _playerPointsTexts[(int)clientId];
+			textObj.text = $"{int.Parse(textObj.text) + points}";
+		}
+
 		/// <summary>
 		/// Handles when a player finishes a race on the server side
 		/// </summary>
 		[Rpc(SendTo.Server)]
-		private void RequestPlayerFinishRpc(ulong netObjId)
+		private void RequestPlayerFinishRpc(ulong clientId)
 		{
 			// Prevent duplicate finishes
-			if (playerFinishDict[netObjId] > 0) return;
+			if (playerFinishDict[clientId] > 0) return;
 
 			// Only start the timer when the first player finishes
 			if (numPlayersFinished == 0)
@@ -136,7 +170,7 @@ namespace packageBase.userInterfaces
 			}
 
 			// Bare bones score calculation
-			playerFinishDict[netObjId] = playerFinishDict.Keys.Count - numPlayersFinished;
+			playerFinishDict[clientId] = playerFinishDict.Keys.Count - numPlayersFinished;
 			numPlayersFinished++;
 
 			// Race is over if everyone finished
@@ -144,6 +178,7 @@ namespace packageBase.userInterfaces
 			{
 				StopCoroutine(raceEndTimer);
 				DisplayRaceEndTimerTextRpc("");
+				EndRace();
 			}
 		}
 
@@ -159,6 +194,7 @@ namespace packageBase.userInterfaces
 			}
 
 			DisplayRaceEndTimerTextRpc("");
+			EndRace();
 
 			yield return null;
 		}
@@ -168,7 +204,7 @@ namespace packageBase.userInterfaces
 		/// </summary>
 		public void OnEventHandler(in EventCheckpointHit e)
 		{
-			if (NetworkManager.Singleton.SpawnManager.SpawnedObjects[e.NetObjId].IsOwner)
+			if (NetworkManager.Singleton.SpawnManager.PlayerObjects[(int)e.ClientId].IsOwner)
 			{
 				if (!e.IsFinish)
 				{
@@ -176,7 +212,7 @@ namespace packageBase.userInterfaces
 				}
 				else if (currentCheckpoints == totalCheckpoints.Value)
 				{
-					RequestPlayerFinishRpc(e.NetObjId);
+					RequestPlayerFinishRpc(e.ClientId);
 				}
 			}
 		}

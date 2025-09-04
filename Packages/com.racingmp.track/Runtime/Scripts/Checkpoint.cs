@@ -17,16 +17,16 @@ namespace racingMP.track
 		/// <param name="other">The car colliding with the checkpoint. This will ALWAYS be a collider attached to a Car instance.</param>
 		private void OnTriggerEnter(Collider other)
 		{
-			ulong netObjId = other.transform.root.GetComponent<NetworkObject>().NetworkObjectId;
+			ulong clientId = other.transform.root.GetComponent<NetworkObject>().OwnerClientId;
 
 			if (isFinish)
 			{
-				EventManager.Instance.PublishEvent(new EventCheckpointHit() { NetObjId = netObjId, IsFinish = isFinish });
+				EventManager.Instance.PublishEvent(new EventCheckpointHit() { ClientId = clientId, IsFinish = isFinish });
 			}
-			else if (!passedCars.Contains(netObjId))
+			else if (!passedCars.Contains(clientId))
 			{
-				passedCars.Add(netObjId);
-				EventManager.Instance.PublishEvent(new EventCheckpointHit() { NetObjId = netObjId, IsFinish = isFinish });
+				passedCars.Add(clientId);
+				EventManager.Instance.PublishEvent(new EventCheckpointHit() { ClientId = clientId, IsFinish = isFinish });
 			}
 		}
 	}
