@@ -47,12 +47,16 @@ namespace packageBase.userInterfaces
 			}
 		}
 
+		/// <summary>
+		/// Creates new text objects as clients join
+		/// </summary>
+		/// <param name="newClientId">ID for the new client</param>
 		[Rpc(SendTo.ClientsAndHost)]
-		private void SendPlayerPointsTextRpc(ulong newClientId, int numTexts)
+		private void SendPlayerPointsTextRpc(ulong newClientId)
 		{
 			if (NetworkManager.Singleton.SpawnManager.PlayerObjects[(int)newClientId].IsOwner)
 			{
-				for (int i = 0; i < numTexts; i++)
+				for (int i = 0; i < NetworkManager.Singleton.SpawnManager.PlayerObjects.Count; i++)
 				{
 					_playerPointsTexts.Add(Instantiate(new GameObject(), _roundEndPanel).AddComponent<TextMeshProUGUI>());
 					_playerPointsTexts[^1].text = "0";
@@ -72,7 +76,7 @@ namespace packageBase.userInterfaces
 			{
 				playerFinishDict.Add(clientId, 0);
 
-				SendPlayerPointsTextRpc(clientId, _playerPointsTexts.Count + 1);
+				SendPlayerPointsTextRpc(clientId);
 			}
 		}
 
@@ -137,6 +141,9 @@ namespace packageBase.userInterfaces
 			_raceEndTimerText.text = time;
 		}
 
+		/// <summary>
+		/// Should run server-side only, handles all things that occur at the end of a race
+		/// </summary>
 		private void EndRace()
 		{
 			foreach(ulong clientId in playerFinishDict.Keys)
