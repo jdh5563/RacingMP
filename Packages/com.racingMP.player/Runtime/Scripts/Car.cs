@@ -77,6 +77,8 @@ namespace racingMP.player
 		public void OnEventHandler(in EventRaceStarted e)
 		{
             canMove = true;
+
+            _rb.isKinematic = false;
 		}
 
 		public void OnEventHandler(in EventResetLevel e)
@@ -88,6 +90,8 @@ namespace racingMP.player
 				wheel.GenerateTorque(_drive, 0);
 				wheel.Steer(0);
 			}
+
+            _rb.isKinematic = true;
 		}
 	}
 }
