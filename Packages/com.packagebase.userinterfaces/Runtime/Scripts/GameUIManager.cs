@@ -169,6 +169,8 @@ namespace packageBase.userInterfaces
 		/// </summary>
 		private void EndRace()
 		{
+			if (!IsServer) return;
+
 			foreach(ulong clientId in playerFinishDict.Keys)
 			{
 				DisplayPlayerPointsTextRpc(clientId, playerFinishDict[clientId]);
@@ -220,6 +222,8 @@ namespace packageBase.userInterfaces
 		/// </summary>
 		private IEnumerator StartRaceEndTimer(int time)
 		{
+			if (!IsServer) yield return null;
+
 			for(int i = time; i > 0; i--)
 			{
 				DisplayRaceEndTimerTextRpc(i.ToString());

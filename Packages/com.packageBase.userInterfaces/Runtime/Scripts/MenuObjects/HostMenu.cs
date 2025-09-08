@@ -47,7 +47,7 @@ namespace packageBase.userInterfaces
 
         public void BeginMatch()
         {
-            NetworkManager.Singleton.SceneManager.LoadScene("JohnScene", LoadSceneMode.Single);
+            NetworkManager.Singleton.SceneManager.LoadScene("JohnScene", LoadSceneMode.Additive);
 
             SceneChangeEvent sceneChangeEvent = new("JohnScene");
             EventManager.Instance.PublishEvent<SceneChangeEvent>(in sceneChangeEvent);
