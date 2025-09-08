@@ -5,8 +5,10 @@ using UnityEngine;
 
 namespace racingMP.track
 {
-	public class TrackManager : NetworkBehaviour, ISystem, ISubscriber<EventCarSpawn>, ISubscriber<EventResetLevel>
+	public class TrackManager : NetworkBehaviour, ISystem, ISubscriber<EventResetLevel>
 	{
+		[SerializeField] private NetworkObject playerPrefab;
+
 		[SerializeField] private TrackPrefabs trackPrefabsSO;
 		[SerializeField] private int gridWidth;
 		[SerializeField] private int gridHeight;
@@ -33,8 +35,6 @@ namespace racingMP.track
 
 			if (IsServer)
 			{
-				EventManager.Instance.SubscribeEvent(typeof(EventCarSpawn), this);
-
 				InitLevel();
 			}
 		}
@@ -71,9 +71,10 @@ namespace racingMP.track
 
 			EventManager.Instance.PublishEvent(new EventTrackGenerated() { TotalCheckpoints = totalCheckpoints });
 
-			foreach (NetworkObject playerObj in NetworkManager.Singleton.SpawnManager.PlayerObjects)
+			foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
 			{
-				MoveCarToStartRpc(playerObj.NetworkObjectId, startBlock.transform.Find("SpawnPoints").GetChild(spawnIndex++).position, startBlock.transform.forward);
+				NetworkManager.Singleton.SpawnManager.InstantiateAndSpawn(playerPrefab, clientId, false, true);
+				MoveCarToStartRpc(clientId, startBlock.transform.Find("SpawnPoints").GetChild(spawnIndex++).position, startBlock.transform.forward);
 			}
 		}
 
@@ -131,20 +132,9 @@ namespace racingMP.track
 		}
 
 		[Rpc(SendTo.ClientsAndHost)]
-		private void MoveCarToStartRpc(ulong networkObjectId, Vector3 spawnPosition, Vector3 spawnForward)
+		private void MoveCarToStartRpc(ulong clientId, Vector3 spawnPosition, Vector3 spawnForward)
 		{
-			NetworkManager.Singleton.SpawnManager.SpawnedObjects[networkObjectId].transform.SetPositionAndRotation(spawnPosition, Quaternion.LookRotation(spawnForward));
-		}
-
-		[Rpc(SendTo.Server)]
-		private void RequestMoveCarToStartRpc(ulong networkObjectId)
-		{
-			MoveCarToStartRpc(networkObjectId, startBlock.transform.Find("SpawnPoints").GetChild(spawnIndex++).position, startBlock.transform.forward);
-		}
-
-		public void OnEventHandler(in EventCarSpawn e)
-		{
-			RequestMoveCarToStartRpc(e.NetObjId);
+			NetworkManager.Singleton.SpawnManager.PlayerObjects[(int)clientId].transform.SetPositionAndRotation(spawnPosition, Quaternion.LookRotation(spawnForward));
 		}
 
 		public void OnEventHandler(in EventResetLevel e)
@@ -153,9 +143,9 @@ namespace racingMP.track
 
 			spawnIndex = 0;
 
-			foreach(NetworkObject player in NetworkManager.Singleton.SpawnManager.PlayerObjects)
+			foreach(ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
 			{
-				MoveCarToStartRpc(player.NetworkObjectId, startBlock.transform.Find("SpawnPoints").GetChild(spawnIndex++).position, startBlock.transform.forward);
+				MoveCarToStartRpc(clientId, startBlock.transform.Find("SpawnPoints").GetChild(spawnIndex++).position, startBlock.transform.forward);
 			}
 		}
 	}

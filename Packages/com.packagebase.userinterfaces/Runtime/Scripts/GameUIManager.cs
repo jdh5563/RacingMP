@@ -60,6 +60,13 @@ namespace packageBase.userInterfaces
 
 					StartCoroutine(StartRace());
 				});
+
+				foreach(ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
+				{
+					playerFinishDict.Add(clientId, 0);
+
+					SendPlayerPointsTextRpc(clientId);
+				}
 			}
 		}
 
@@ -115,11 +122,11 @@ namespace packageBase.userInterfaces
 		}
 
 		/// <summary>
-		/// When "JohnScene" loads, we begin the countdown timer to start the race
+		/// When "GameUIScene" loads on all clients, we begin the countdown timer to start the race
 		/// </summary>
 		private void Countdown(string sceneName, LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedOut)
 		{
-			if (sceneName == "JohnScene") StartCoroutine(StartRace());
+			if (sceneName == "GameUIScene") StartCoroutine(StartRace());
 		}
 
 		[Rpc(SendTo.ClientsAndHost)]

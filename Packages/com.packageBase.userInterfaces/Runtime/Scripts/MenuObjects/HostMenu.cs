@@ -32,7 +32,7 @@ namespace packageBase.userInterfaces
 			base.Start();
         }
 
-        private void _networkManager_LobbyConnectionEvent(NetworkManager arg1, ConnectionEventData arg2)
+		private void _networkManager_LobbyConnectionEvent(NetworkManager arg1, ConnectionEventData arg2)
         {
 			if (arg2.EventType == ConnectionEvent.ClientConnected)
 			{
@@ -47,9 +47,9 @@ namespace packageBase.userInterfaces
 
         public void BeginMatch()
         {
-            NetworkManager.Singleton.SceneManager.LoadScene("JohnScene", LoadSceneMode.Additive);
+			NetworkManager.Singleton.SceneManager.LoadScene("JohnScene", LoadSceneMode.Additive);
 
-            SceneChangeEvent sceneChangeEvent = new("JohnScene");
+			SceneChangeEvent sceneChangeEvent = new("JohnScene");
             EventManager.Instance.PublishEvent<SceneChangeEvent>(in sceneChangeEvent);
         }
 
@@ -69,6 +69,16 @@ namespace packageBase.userInterfaces
             {
                 _joinCodeText.text = $"Join Code: {joinCode}";
             }
-        }
-    }
+
+			NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += SceneLoadEventCompleted;
+		}
+
+		private void SceneLoadEventCompleted(string sceneName, LoadSceneMode loadSceneMode, System.Collections.Generic.List<ulong> clientsCompleted, System.Collections.Generic.List<ulong> clientsTimedOut)
+		{
+			if (sceneName == "JohnScene")
+			{
+				NetworkManager.Singleton.SceneManager.LoadScene("GameUIScene", LoadSceneMode.Additive);
+			}
+		}
+	}
 }
