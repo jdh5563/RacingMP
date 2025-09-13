@@ -35,6 +35,14 @@ namespace racingMP.track
 
 			if (IsServer)
 			{
+				NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += SceneLoadCompletedEvent;
+			}
+		}
+
+		private void SceneLoadCompletedEvent(string sceneName, UnityEngine.SceneManagement.LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedOut)
+		{
+			if (sceneName == "GameUIScene")
+			{
 				InitLevel();
 			}
 		}

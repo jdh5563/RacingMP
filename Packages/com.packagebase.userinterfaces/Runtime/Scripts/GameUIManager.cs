@@ -7,10 +7,11 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.UI;
+using UnityEditor.PackageManager;
 
 namespace packageBase.userInterfaces
 {
-	public class GameUIManager : NetworkBehaviour, ISubscriber<EventTrackGenerated>, ISubscriber<EventCheckpointHit>, ISubscriber<EventCarSpawn>
+	public class GameUIManager : NetworkBehaviour, ISubscriber<EventTrackGenerated>, ISubscriber<EventCheckpointHit>
 	{
 		[SerializeField] private TextMeshProUGUI _countdownText;
 		[SerializeField] private TextMeshProUGUI _checkpointText;
@@ -31,13 +32,15 @@ namespace packageBase.userInterfaces
 
 		private Coroutine raceEndTimer = null;
 
+		private void Awake()
+		{
+			EventManager.Instance.SubscribeEvent(typeof(EventTrackGenerated), this);
+			EventManager.Instance.SubscribeEvent(typeof(EventCheckpointHit), this);
+		}
+
 		private void Start()
 		{
 			DontDestroyOnLoad(gameObject);
-
-			EventManager.Instance.SubscribeEvent(typeof(EventTrackGenerated), this);
-			EventManager.Instance.SubscribeEvent(typeof(EventCheckpointHit), this);
-			EventManager.Instance.SubscribeEvent(typeof(EventCarSpawn), this);
 		}
 
 		public override void OnNetworkSpawn()
@@ -46,28 +49,57 @@ namespace packageBase.userInterfaces
 
 			if (IsServer)
 			{
-				NetworkManager.SceneManager.OnLoadEventCompleted += Countdown;
-				NetworkManager.OnClientConnectedCallback += ClientConnected;
-				_nextRoundButton.onClick.AddListener(() =>
-				{
-					List<ulong> keysToModify = new List<ulong>(playerFinishDict.Keys);
-					foreach (ulong clientId in keysToModify)
-					{
-						playerFinishDict[clientId] = 0;
-					}
+				NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += Countdown;
+				NetworkManager.OnConnectionEvent += PlayerConnectionEvent;
+				totalCheckpoints.OnValueChanged += (int prevValue, int newValue) => UpdateCheckpointTextRpc(newValue);
 
-					StartNextRoundRpc();
-
-					StartCoroutine(StartRace());
-				});
+				_nextRoundButton.onClick.AddListener(ResetLevel);
 
 				foreach(ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
 				{
 					playerFinishDict.Add(clientId, 0);
+				}
 
-					SendPlayerPointsTextRpc(clientId);
+				InitPlayerPointsTextRpc();
+			}
+		}
+
+		private void PlayerConnectionEvent(NetworkManager networkManager, ConnectionEventData connectionEventData)
+		{
+			if(connectionEventData.EventType == ConnectionEvent.ClientConnected)
+			{
+				if (IsServer)
+				{
+					playerFinishDict.Add(connectionEventData.ClientId, 0);
+				}
+				else
+				{
+					InitPlayerPointsTextRpc();
 				}
 			}
+			else if(connectionEventData.EventType == ConnectionEvent.PeerConnected)
+			{
+				AddPlayerPointsTextRpc();
+			}
+		}
+
+		private void ResetLevel()
+		{
+			List<ulong> keysToModify = new List<ulong>(playerFinishDict.Keys);
+			foreach (ulong clientId in keysToModify)
+			{
+				playerFinishDict[clientId] = 0;
+			}
+
+			StartNextRoundRpc();
+
+			StartCoroutine(StartRace());
+		}
+
+		[Rpc(SendTo.ClientsAndHost)]
+		private void UpdateCheckpointTextRpc(int totalCheckpoints)
+		{
+			_checkpointText.text = $"Checkpoints: {currentCheckpoints} / {totalCheckpoints}";
 		}
 
 		[Rpc(SendTo.ClientsAndHost)]
@@ -80,45 +112,35 @@ namespace packageBase.userInterfaces
 
 			EventManager.Instance.PublishEvent(new EventResetLevel());
 
-			_checkpointText.text = $"Checkpoints: {currentCheckpoints} / {totalCheckpoints.Value}";
+			UpdateCheckpointTextRpc(totalCheckpoints.Value);
 		}
 
 		/// <summary>
 		/// Creates new text objects as clients join
 		/// </summary>
-		/// <param name="newClientId">ID for the new client</param>
 		[Rpc(SendTo.ClientsAndHost)]
-		private void SendPlayerPointsTextRpc(ulong newClientId)
+		private void InitPlayerPointsTextRpc()
 		{
-			int numPlayers = NetworkManager.Singleton.SpawnManager.PlayerObjects.Count;
-			if (NetworkManager.Singleton.SpawnManager.PlayerObjects[(int)newClientId].IsOwner)
-			{
-				for (int i = 0; i < numPlayers; i++)
-				{
-					_playerPointsTexts.Add(Instantiate(new GameObject(), _roundEndPanel).AddComponent<TextMeshProUGUI>());
-					_playerPointsTexts[^1].alignment = TextAlignmentOptions.MidlineLeft;
-					_playerPointsTexts[^1].rectTransform.anchoredPosition = new Vector3(basePointsTextPosition.x, basePointsTextPosition.y + pointsTextOffset * i, basePointsTextPosition.z);
-					_playerPointsTexts[^1].text = $"Player {i + 1}: 0";
-					// There will be more functionality to make this not redundant like filling the new object with current info instead of defaults
-				}
-			}
-			else
+			int numPlayers = NetworkManager.Singleton.ConnectedClientsIds.Count;
+			for (int i = 0; i < numPlayers; i++)
 			{
 				_playerPointsTexts.Add(Instantiate(new GameObject(), _roundEndPanel).AddComponent<TextMeshProUGUI>());
 				_playerPointsTexts[^1].alignment = TextAlignmentOptions.MidlineLeft;
-				_playerPointsTexts[^1].rectTransform.anchoredPosition = new Vector3(basePointsTextPosition.x, basePointsTextPosition.y + pointsTextOffset * (numPlayers - 1), basePointsTextPosition.z);
-				_playerPointsTexts[^1].text = $"Player {numPlayers}: 0";
+				_playerPointsTexts[^1].rectTransform.anchoredPosition = new Vector3(basePointsTextPosition.x, basePointsTextPosition.y + pointsTextOffset * i, basePointsTextPosition.z);
+				_playerPointsTexts[^1].text = $"Player {i + 1}: 0";
+				// There will be more functionality to make this not redundant like filling the new object with current info instead of defaults
 			}
 		}
 
-		private void ClientConnected(ulong clientId)
+		[Rpc(SendTo.ClientsAndHost)]
+		private void AddPlayerPointsTextRpc()
 		{
-			if (IsServer)
-			{
-				playerFinishDict.Add(clientId, 0);
+			int numPlayers = NetworkManager.Singleton.ConnectedClientsIds.Count;
 
-				SendPlayerPointsTextRpc(clientId);
-			}
+			_playerPointsTexts.Add(Instantiate(new GameObject(), _roundEndPanel).AddComponent<TextMeshProUGUI>());
+			_playerPointsTexts[^1].alignment = TextAlignmentOptions.MidlineLeft;
+			_playerPointsTexts[^1].rectTransform.anchoredPosition = new Vector3(basePointsTextPosition.x, basePointsTextPosition.y + pointsTextOffset * (numPlayers - 1), basePointsTextPosition.z);
+			_playerPointsTexts[^1].text = $"Player {numPlayers}: 0";
 		}
 
 		/// <summary>
@@ -262,23 +284,11 @@ namespace packageBase.userInterfaces
 		}
 
 		/// <summary>
-		/// Set initial checkpoint text for anyone joining the lobby
-		/// </summary>
-		public void OnEventHandler(in EventCarSpawn e)
-		{
-			if (NetworkManager.Singleton.SpawnManager.SpawnedObjects[e.NetObjId].IsOwner)
-			{
-				_checkpointText.text = $"Checkpoints: {currentCheckpoints} / {totalCheckpoints.Value}";
-			}
-		}
-
-		/// <summary>
 		/// Set initial checkpoint text for the host
 		/// </summary>
 		public void OnEventHandler(in EventTrackGenerated e)
 		{
 			totalCheckpoints.Value = e.TotalCheckpoints;
-			_checkpointText.text = $"Checkpoints: {currentCheckpoints} / {totalCheckpoints.Value}";
 		}
 	}
 }
