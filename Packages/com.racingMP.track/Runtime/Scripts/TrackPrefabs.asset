@@ -13,14 +13,11 @@ MonoBehaviour:
   m_Name: TrackPrefabs
   m_EditorClassIdentifier: 
   startPrefab: {fileID: 3613117383629387620, guid: ec3db7cf32a4f4442b7826c2422fcfd8, type: 3}
-  endPrefab: {fileID: 8869182733837687723, guid: d91def03db9500f4c842d636cbfafe4a, type: 3}
+  finishPrefab: {fileID: 8869182733837687723, guid: d91def03db9500f4c842d636cbfafe4a, type: 3}
   checkPointPrefab: {fileID: 7909344510671959656, guid: 5dab61c6792a7c54da93b260ece56a98, type: 3}
   trackComponentPrefabs:
   - {fileID: 3800998404443741364, guid: 2cf227dcabde16745965cc264c79f8c9, type: 3}
   - {fileID: 1876860249769240506, guid: bf67098c9bec8a94a8364b0c5fb6bb25, type: 3}
   - {fileID: 426670428948209047, guid: 925f4b5757870ab41babc30973ea0127, type: 3}
   - {fileID: 5993111082466256179, guid: 0d40ec810f23e864289e2d796c276ec7, type: 3}
-  - {fileID: 2409525453245083513, guid: 40d5aaa2507826e4da9712fa3e352767, type: 3}
-  - {fileID: 6820574906683240825, guid: bb57c1b0d2b7e6d468e54a16d75ef35e, type: 3}
-  completeTrackPrefabs:
-  - {fileID: 1686950612619991849, guid: 356b592782723574cbd098ddd621aa74, type: 3}
+  completeTrackPrefabs: []
